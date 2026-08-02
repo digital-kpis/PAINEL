@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital KPIs</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0f172a;
+    color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 20px 16px 0;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+  p.subtitle {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+
+  /* Barra de abas no estilo do Controle de Helppis */
+  .tabs {
+    position: relative;
+    display: flex;
+    gap: 28px;
+    overflow-x: auto;
+    border-bottom: 1px solid #1e293b;
+    padding: 0 16px;
+    flex-shrink: 0;
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    text-decoration: none;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    white-space: nowrap;
+    padding: 0 0 12px 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+  .tab .icon {
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+  .tab.active {
+    color: #f1f5f9;
+  }
+  .tab:not(.active):hover {
+    color: #cbd5e1;
+  }
+  .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 2px;
+    transition: left 0.25s ease, width 0.25s ease;
+  }
+
+  .content {
+    flex: 1;
+    position: relative;
+    background: #ffffff;
+  }
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+  }
+  iframe.active {
+    display: block;
+  }
+  .loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    background: #0f172a;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Digital KPIs</h1>
+    <p class="subtitle">Toque em uma aba para carregar o sistema aqui mesmo</p>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-target="frame-helppis">
+      <span class="icon">📁</span> Helppis
+    </button>
+    <button class="tab" data-target="frame-presenca">
+      <span class="icon">🕐</span> Presença
+    </button>
+    <button class="tab" data-target="frame-dashboard">
+      <span class="icon">📊</span> Dashboard
+    </button>
+    <button class="tab" data-target="frame-assai">
+      <span class="icon">📈</span> Portal Assaí
+    </button>
+    <button class="tab" data-target="frame-escala">
+      <span class="icon">📅</span> Escala
+    </button>
+    <span class="indicator" id="indicator"></span>
+  </nav>
+
+  <div class="content" id="content">
+    <div class="loading" id="loading">Carregando...</div>
+    <iframe id="frame-helppis" class="active" data-src="https://digital-kpis.github.io/Controle-Helppi-/"></iframe>
+    <iframe id="frame-presenca" data-src="https://digital-kpis.github.io/controle-presenca/index.html"></iframe>
+    <iframe id="frame-dashboard" data-src="https://digital-kpis.github.io/digital-dashboard/"></iframe>
+    <iframe id="frame-assai" data-src="https://digital-kpis.github.io/portal-assai/"></iframe>
+    <iframe id="frame-escala" data-src="https://digital-kpis.github.io/escala-digital/"></iframe>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const iframes = document.querySelectorAll("iframe");
+    const loading = document.getElementById("loading");
+    const indicator = document.getElementById("indicator");
+    const tabsNav = document.getElementById("tabs");
+
+    function moveIndicator(tab) {
+      const navRect = tabsNav.getBoundingClientRect();
+      const tabRect = tab.getBoundingClientRect();
+      indicator.style.left = (tabRect.left - navRect.left + tabsNav.scrollLeft) + "px";
+      indicator.style.width = tabRect.width + "px";
+    }
+
+    function loadFrame(iframe) {
+      if (!iframe.src && iframe.dataset.src) {
+        loading.style.display = "flex";
+        iframe.src = iframe.dataset.src;
+        iframe.addEventListener("load", () => {
+          loading.style.display = "none";
+        }, { once: true });
+      } else {
+        loading.style.display = "none";
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        moveIndicator(tab);
+
+        iframes.forEach(f => f.classList.remove("active"));
+        const target = document.getElementById(tab.dataset.target);
+        target.classList.add("active");
+        loadFrame(target);
+      });
+    });
+
+    // Posiciona o indicador na aba ativa e carrega o conteúdo inicial
+    window.addEventListener("load", () => {
+      moveIndicator(document.querySelector(".tab.active"));
+      loadFrame(document.querySelector("iframe.active"));
+    });
+  </script>
+</body>
+</html>
