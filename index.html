@@ -260,6 +260,161 @@
     margin: 18px 0 6px;
     max-width: 420px;
   }
+
+  /* Painel Checklist */
+  #panel-checklist {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .ck-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .ck-field label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .ck-field input[type="date"],
+  .ck-field input[type="text"] {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .ck-field input[type="text"] {
+    width: 160px;
+  }
+  .ck-status {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    padding-bottom: 9px;
+  }
+  .ck-subtabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .ck-subtab {
+    flex: 1;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: center;
+  }
+  .ck-subtab.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+  }
+  .ck-progress {
+    background: #1e293b;
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    max-width: 420px;
+  }
+  .ck-progress-bar {
+    height: 100%;
+    background: #22c55e;
+    transition: width 0.25s ease;
+  }
+  .ck-list {
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ck-item {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #26334a;
+  }
+  .ck-item.done {
+    border-color: #22c55e33;
+    background: #16241d;
+  }
+  .ck-item-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .ck-checkbox {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: #22c55e;
+    cursor: pointer;
+  }
+  .ck-item-text {
+    flex: 1;
+  }
+  .ck-item-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .ck-item-meta {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 3px;
+  }
+  .ck-item-del {
+    background: none;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .ck-item-obs {
+    width: 100%;
+    margin-top: 8px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 34px;
+  }
+  .ck-add-item {
+    margin-top: 10px;
+    background: none;
+    border: 1px dashed #334155;
+    color: #94a3b8;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 420px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .ck-add-item:hover { border-color: #3b82f6; color: #f1f5f9; }
+  .ck-summary {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 12px;
+    max-width: 420px;
+  }
 </style>
 </head>
 <body>
@@ -290,6 +445,9 @@
       </button>
       <button class="tab" data-target="panel-helppiloja">
         <span class="icon">🛒</span> Helppi Loja
+      </button>
+      <button class="tab" data-target="panel-checklist">
+        <span class="icon">✅</span> Checklist
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -350,6 +508,32 @@
           <div></div>
         </div>
       </div>
+    </div>
+
+    <div class="pane" id="panel-checklist">
+      <div class="ck-toolbar">
+        <div class="ck-field">
+          <label>Dia</label>
+          <input type="date" id="ck-date">
+        </div>
+        <div class="ck-field">
+          <label>Quem preenche</label>
+          <input type="text" id="ck-colaborador" placeholder="Seu nome">
+        </div>
+        <span id="ck-status" class="ck-status">🟡 Conectando…</span>
+      </div>
+
+      <div class="ck-subtabs">
+        <button class="ck-subtab active" data-turno="abertura">🌅 Abertura</button>
+        <button class="ck-subtab" data-turno="fechamento">🌙 Fechamento</button>
+      </div>
+
+      <div class="ck-progress"><div class="ck-progress-bar" id="ck-progress-bar" style="width:0%"></div></div>
+
+      <div class="ck-list" id="ck-list"></div>
+      <button class="ck-add-item" id="ck-add-item">+ Adicionar item</button>
+
+      <div class="ck-summary" id="ck-summary"></div>
     </div>
   </div>
 
@@ -544,6 +728,191 @@
 
       dateInput.value = todayStr();
       watchDay(dateInput.value);
+    })();
+
+    /* ===== Painel Checklist ===== */
+    (function () {
+      const dateInput = document.getElementById("ck-date");
+      const colaboradorInput = document.getElementById("ck-colaborador");
+      const statusEl = document.getElementById("ck-status");
+      const listEl = document.getElementById("ck-list");
+      const addBtn = document.getElementById("ck-add-item");
+      const progressBar = document.getElementById("ck-progress-bar");
+      const summaryEl = document.getElementById("ck-summary");
+      const subtabs = document.querySelectorAll(".ck-subtab");
+
+      const DEFAULT_ITEMS = {
+        abertura: [
+          "Temperatura da câmara fria conferida e registrada",
+          "Leitores/coletores ligados e funcionando",
+          "Área de separação limpa e organizada",
+          "App Parceiro / sistema online",
+          "Equipe presente conforme escala do dia",
+          "Embalagens e insumos disponíveis"
+        ],
+        fechamento: [
+          "Câmara fria fechada e temperatura registrada",
+          "Pedidos pendentes tratados/zerados",
+          "Área de separação limpa",
+          "Equipamentos desligados ou em carga",
+          "Lixo removido da área",
+          "Fechamento do turno realizado no sistema"
+        ]
+      };
+
+      let currentTurno = "abertura";
+      let currentRef = null;
+      let suppressUntil = 0;
+
+      db.ref(".info/connected").on("value", snap => {
+        statusEl.textContent = snap.val() ? "🟢 Sincronizado" : "🔴 Sem conexão";
+      });
+
+      function todayStr() {
+        const d = new Date();
+        const tz = d.getTimezoneOffset() * 60000;
+        return new Date(d - tz).toISOString().slice(0, 10);
+      }
+
+      function nowTime() {
+        const d = new Date();
+        return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function makeDefaultItems(turno) {
+        return DEFAULT_ITEMS[turno].map((label, i) => ({
+          id: turno + "-" + i + "-" + Date.now(),
+          label,
+          checked: false,
+          time: "",
+          colaborador: "",
+          obs: ""
+        }));
+      }
+
+      function getItemsFromDOM() {
+        return Array.from(listEl.querySelectorAll(".ck-item")).map(el => ({
+          id: el.dataset.id,
+          label: el.querySelector(".ck-item-label").textContent,
+          checked: el.querySelector(".ck-checkbox").checked,
+          time: el.dataset.time || "",
+          colaborador: el.dataset.colaborador || "",
+          obs: el.querySelector(".ck-item-obs").value
+        }));
+      }
+
+      function updateProgress() {
+        const items = getItemsFromDOM();
+        const done = items.filter(i => i.checked).length;
+        const pct = items.length ? Math.round((done / items.length) * 100) : 0;
+        progressBar.style.width = pct + "%";
+        summaryEl.textContent = items.length
+          ? `${done} de ${items.length} itens concluídos (${pct}%)`
+          : "Nenhum item cadastrado ainda.";
+      }
+
+      function persist() {
+        updateProgress();
+        if (!currentRef) return;
+        suppressUntil = Date.now() + 1200;
+        currentRef.set({ items: getItemsFromDOM() });
+      }
+
+      function renderItem(item) {
+        const el = document.createElement("div");
+        el.className = "ck-item" + (item.checked ? " done" : "");
+        el.dataset.id = item.id;
+        el.dataset.time = item.time || "";
+        el.dataset.colaborador = item.colaborador || "";
+        el.innerHTML = `
+          <div class="ck-item-row">
+            <input type="checkbox" class="ck-checkbox" ${item.checked ? "checked" : ""}>
+            <div class="ck-item-text">
+              <div class="ck-item-label" contenteditable="true">${item.label}</div>
+              <div class="ck-item-meta">${item.checked && item.time ? `✔ ${item.time}${item.colaborador ? " · " + item.colaborador : ""}` : "pendente"}</div>
+            </div>
+            <button class="ck-item-del" title="Remover">✕</button>
+          </div>
+          <textarea class="ck-item-obs" placeholder="Observação (opcional)">${item.obs || ""}</textarea>
+        `;
+
+        const checkbox = el.querySelector(".ck-checkbox");
+        const meta = el.querySelector(".ck-item-meta");
+
+        checkbox.addEventListener("change", () => {
+          el.classList.toggle("done", checkbox.checked);
+          if (checkbox.checked) {
+            el.dataset.time = nowTime();
+            el.dataset.colaborador = colaboradorInput.value || "";
+            meta.textContent = `✔ ${el.dataset.time}${el.dataset.colaborador ? " · " + el.dataset.colaborador : ""}`;
+          } else {
+            el.dataset.time = "";
+            meta.textContent = "pendente";
+          }
+          persist();
+        });
+
+        el.querySelector(".ck-item-label").addEventListener("blur", persist);
+        el.querySelector(".ck-item-obs").addEventListener("change", persist);
+        el.querySelector(".ck-item-del").addEventListener("click", () => {
+          el.remove();
+          persist();
+        });
+
+        listEl.appendChild(el);
+      }
+
+      function renderFromData(data, turno) {
+        listEl.innerHTML = "";
+        const items = (data && data.items && data.items.length) ? data.items : makeDefaultItems(turno);
+        items.forEach(renderItem);
+        updateProgress();
+      }
+
+      function watchDay(date, turno) {
+        if (currentRef) currentRef.off();
+        currentRef = db.ref("checklist/" + date + "/" + turno);
+        currentRef.on("value", snap => {
+          if (Date.now() < suppressUntil) return;
+          const active = document.activeElement;
+          const isEditingHere = active && listEl.contains(active);
+          if (isEditingHere) return;
+          renderFromData(snap.val(), turno);
+        });
+      }
+
+      addBtn.addEventListener("click", () => {
+        renderItem({
+          id: "custom-" + Date.now(),
+          label: "Novo item (toque para editar)",
+          checked: false,
+          time: "",
+          colaborador: "",
+          obs: ""
+        });
+        persist();
+      });
+
+      subtabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          subtabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          currentTurno = tab.dataset.turno;
+          watchDay(dateInput.value, currentTurno);
+        });
+      });
+
+      dateInput.addEventListener("change", () => {
+        watchDay(dateInput.value, currentTurno);
+      });
+
+      colaboradorInput.addEventListener("change", () => {
+        localStorage.setItem("ck-colaborador", colaboradorInput.value);
+      });
+      colaboradorInput.value = localStorage.getItem("ck-colaborador") || "";
+
+      dateInput.value = todayStr();
+      watchDay(dateInput.value, currentTurno);
     })();
 
     // Registra o service worker para permitir instalar o app e abrir offline
