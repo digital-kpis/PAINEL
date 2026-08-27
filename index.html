@@ -1074,6 +1074,119 @@
     font-size: 0.85rem;
     max-width: 460px;
   }
+
+  /* Painel Relatório Semanal */
+  #panel-relatorio {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .rel-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .rel-field { flex: 1; min-width: 160px; max-width: 260px; }
+  .rel-field label {
+    display: block;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .rel-field input, .rel-field select {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  .rel-actions {
+    display: flex;
+    gap: 8px;
+    margin: 14px 0 18px;
+  }
+  .rel-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .rel-btn:hover { background: #2563eb; }
+  .rel-btn.secondary { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; }
+  .rel-btn.secondary:hover { border-color: #64748b; }
+
+  .rel-report {
+    max-width: 480px;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .rel-report-header {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #334155;
+  }
+  .rel-report-title { font-size: 1.05rem; font-weight: 700; }
+  .rel-report-sub { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; }
+  .rel-table { width: 100%; border-collapse: collapse; }
+  .rel-table th {
+    text-align: left;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    color: #64748b;
+    font-weight: 600;
+    padding: 6px 4px;
+    border-bottom: 1px solid #334155;
+  }
+  .rel-table th.num, .rel-table td.num { text-align: right; }
+  .rel-table td {
+    padding: 9px 4px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #26334a;
+  }
+  .rel-table tr:last-child td { border-bottom: none; }
+  .rel-metric-name { display: flex; align-items: center; gap: 6px; }
+  .rel-val { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rel-val.ok { color: #22c55e; }
+  .rel-val.bad { color: #ef4444; }
+  .rel-trend { font-size: 0.72rem; color: #94a3b8; }
+  .rel-trend.up { color: #22c55e; }
+  .rel-trend.down { color: #ef4444; }
+  .rel-footer-note {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #334155;
+    font-size: 0.7rem;
+    color: #64748b;
+  }
+  .rel-empty { color: #64748b; font-size: 0.9rem; max-width: 480px; }
+
+  @media print {
+    body * { visibility: hidden; }
+    #panel-relatorio, #panel-relatorio * { visibility: visible; }
+    #panel-relatorio {
+      position: absolute; top: 0; left: 0; width: 100%;
+      background: white !important; color: black !important; padding: 0;
+    }
+    .rel-toolbar, .rel-actions { display: none !important; }
+    .rel-report {
+      background: white !important; color: black !important;
+      box-shadow: none; max-width: 100%; padding: 0;
+    }
+    .rel-report-sub, .rel-table th, .rel-trend, .rel-footer-note { color: #444 !important; }
+    .rel-table td, .rel-table th { border-color: #ccc !important; }
+    .rel-val.ok { color: #16a34a !important; }
+    .rel-val.bad { color: #dc2626 !important; }
+  }
 </style>
 </head>
 <body>
@@ -1119,6 +1232,9 @@
       </button>
       <button class="tab" data-target="panel-ferias">
         <span class="icon">🏖️</span> Férias
+      </button>
+      <button class="tab" data-target="panel-relatorio">
+        <span class="icon">📄</span> Relatório
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1306,6 +1422,30 @@
         Consulta em tempo real — os dados vêm direto do app Escala Digital.
         Pra marcar/editar férias de alguém, use o botão "+ Férias" lá.
       </p>
+    </div>
+
+    <div class="pane" id="panel-relatorio">
+      <div class="rel-toolbar">
+        <div class="rel-field">
+          <label>Loja</label>
+          <input type="text" id="rel-loja-search" list="rel-loja-datalist" placeholder="Digite o nome da loja...">
+          <datalist id="rel-loja-datalist"></datalist>
+        </div>
+        <div class="rel-field">
+          <label>Semana terminando em</label>
+          <input type="date" id="rel-data-fim">
+        </div>
+      </div>
+
+      <div class="rel-actions">
+        <button class="rel-btn" id="rel-gerar-btn">📄 Gerar relatório</button>
+        <button class="rel-btn secondary" id="rel-print-btn" style="display:none;">🖨️ Exportar / Imprimir</button>
+        <button class="rel-btn secondary" id="rel-copy-btn" style="display:none;">📋 Copiar resumo</button>
+      </div>
+
+      <div id="rel-output">
+        <p class="rel-empty">Escolha a loja e a semana, depois clique em "Gerar relatório".</p>
+      </div>
     </div>
   </div>
 
@@ -2371,6 +2511,152 @@
       }
 
       db.ref("state/ferias").on("value", render);
+    })();
+
+    /* ===== Relatório Semanal ===== */
+    (function () {
+      const searchInput = document.getElementById("rel-loja-search");
+      const datalist = document.getElementById("rel-loja-datalist");
+      const dataFimInput = document.getElementById("rel-data-fim");
+      const gerarBtn = document.getElementById("rel-gerar-btn");
+      const printBtn = document.getElementById("rel-print-btn");
+      const copyBtn = document.getElementById("rel-copy-btn");
+      const outputEl = document.getElementById("rel-output");
+
+      const METRICS = [
+        { key: "cancelOn", title: "Cancelamento Total", meta: 5, higherBad: true, icon: "❌" },
+        { key: "rupturaOn", title: "Ruptura de Item", meta: 5, higherBad: true, icon: "📦" },
+        { key: "capFatOn", title: "Cap / Faturamento", meta: 85, higherBad: false, icon: "📈" },
+        { key: "tempoOnOn", title: "Tempo Online", meta: 95, higherBad: false, icon: "🟢" },
+        { key: "slaPrepOn", title: "SLA Preparo", meta: 85, higherBad: false, icon: "⏱️" },
+        { key: "slaEntOn", title: "SLA de Entrega", meta: 85, higherBad: false, icon: "🚀" },
+        { key: "nsuOn", title: "NSU (entregador na loja)", meta: 12, higherBad: true, icon: "🚚" },
+        { key: "vendaPerdidaOn", title: "Venda Perdida", meta: 15, higherBad: true, icon: "💰" }
+      ];
+
+      let lojasCache = [];
+
+      db.ref("indicadores_index").once("value").then(snap => {
+        const data = snap.val() || {};
+        lojasCache = Object.keys(data).map(slug => ({ slug, nome: data[slug] }));
+        lojasCache.sort((a, b) => a.nome.localeCompare(b.nome, "pt"));
+        datalist.innerHTML = lojasCache.map(e => `<option value="${e.nome}">`).join("");
+      });
+
+      function todayISO() {
+        const d = new Date();
+        const tz = d.getTimezoneOffset() * 60000;
+        return new Date(d - tz).toISOString().slice(0, 10);
+      }
+      dataFimInput.value = todayISO();
+
+      function addDaysISO(iso, days) {
+        const d = new Date(iso + "T00:00:00");
+        d.setDate(d.getDate() + days);
+        return d.toISOString().slice(0, 10);
+      }
+      function fmtBR(iso) { const [y, m, d] = iso.split("-"); return `${d}/${m}/${y}`; }
+
+      function average(records, dates, key) {
+        const vals = dates.map(d => records[d] && records[d][key]).filter(v => v !== undefined && v !== null);
+        if (!vals.length) return null;
+        return vals.reduce((a, b) => a + b, 0) / vals.length;
+      }
+
+      function renderReport(nome, gerShort, records, semanaDates, anteriorDates) {
+        const validSemana = semanaDates.filter(d => records[d]);
+        if (!validSemana.length) {
+          outputEl.innerHTML = '<p class="rel-empty">Nenhum dado salvo para essa loja nessa semana. Carregue os arquivos de indicadores na aba 📊 Indicadores primeiro.</p>';
+          printBtn.style.display = "none";
+          copyBtn.style.display = "none";
+          return;
+        }
+
+        const rows = METRICS.map(m => {
+          const avgAtual = average(records, semanaDates, m.key);
+          if (avgAtual === null) return null;
+          const avgAnterior = average(records, anteriorDates, m.key);
+          const bad = m.higherBad ? avgAtual > m.meta : avgAtual < m.meta;
+          let trendHtml = "";
+          if (avgAnterior !== null) {
+            const delta = avgAtual - avgAnterior;
+            const melhorou = m.higherBad ? delta < 0 : delta > 0;
+            const arrow = delta > 0.05 ? "▲" : delta < -0.05 ? "▼" : "→";
+            const cls = Math.abs(delta) < 0.05 ? "" : (melhorou ? "up" : "down");
+            trendHtml = `<span class="rel-trend ${cls}">${arrow} ${Math.abs(delta).toFixed(1)}pp vs sem. anterior</span>`;
+          }
+          return { m, avgAtual, bad, trendHtml };
+        }).filter(Boolean);
+
+        const okCount = rows.filter(r => !r.bad).length;
+
+        const tableRows = rows.map(r => `
+          <tr>
+            <td>
+              <div class="rel-metric-name">${r.m.icon} ${r.m.title}</div>
+              ${r.trendHtml}
+            </td>
+            <td class="num"><span class="rel-val ${r.bad ? "bad" : "ok"}">${r.avgAtual.toFixed(1)}%</span></td>
+          </tr>`).join("");
+
+        const periodoTxt = `${fmtBR(semanaDates[0])} a ${fmtBR(semanaDates[semanaDates.length - 1])}`;
+
+        outputEl.innerHTML = `
+          <div class="rel-report" id="rel-report-content">
+            <div class="rel-report-header">
+              <div class="rel-report-title">Relatório Semanal — ${nome}</div>
+              <div class="rel-report-sub">Gerente Regional: ${gerShort} · Período: ${periodoTxt} · ${okCount}/${rows.length} indicadores na meta · ${validSemana.length} dia(s) com dados</div>
+            </div>
+            <table class="rel-table">
+              <thead><tr><th>Indicador (média da semana)</th><th class="num">Valor</th></tr></thead>
+              <tbody>${tableRows}</tbody>
+            </table>
+            <div class="rel-footer-note">Gerado automaticamente pelo PAINEL a partir dos indicadores salvos. Comparação é com a média dos 7 dias anteriores.</div>
+          </div>`;
+
+        printBtn.style.display = "inline-block";
+        copyBtn.style.display = "inline-block";
+
+        printBtn.onclick = () => window.print();
+        copyBtn.onclick = () => {
+          let txt = `RELATÓRIO SEMANAL — ${nome}\nGerente Regional: ${gerShort}\nPeríodo: ${periodoTxt}\n${okCount}/${rows.length} indicadores na meta\n\n`;
+          rows.forEach(r => {
+            txt += `${r.m.icon} ${r.m.title}: ${r.avgAtual.toFixed(1)}% ${r.bad ? "(fora da meta)" : "(dentro da meta)"}\n`;
+          });
+          navigator.clipboard.writeText(txt).then(() => {
+            copyBtn.textContent = "✔ Copiado!";
+            setTimeout(() => { copyBtn.textContent = "📋 Copiar resumo"; }, 2000);
+          });
+        };
+      }
+
+      gerarBtn.addEventListener("click", () => {
+        const nome = searchInput.value.trim();
+        const found = lojasCache.find(l => l.nome === nome);
+        if (!found) {
+          outputEl.innerHTML = '<p class="rel-empty">Selecione uma loja válida da lista.</p>';
+          return;
+        }
+        const dataFim = dataFimInput.value;
+        if (!dataFim) return;
+
+        outputEl.innerHTML = '<p class="rel-empty">Carregando…</p>';
+        printBtn.style.display = "none";
+        copyBtn.style.display = "none";
+
+        db.ref("indicadores/" + found.slug).once("value").then(snap => {
+          const records = snap.val() || {};
+          const semanaDates = [];
+          for (let i = 6; i >= 0; i--) semanaDates.push(addDaysISO(dataFim, -i));
+          const anteriorDates = [];
+          for (let i = 13; i >= 7; i--) anteriorDates.push(addDaysISO(dataFim, -i));
+
+          const anyRecord = semanaDates.map(d => records[d]).find(Boolean) || Object.values(records)[0];
+          const gerShort = anyRecord ? anyRecord.gerShort : "—";
+
+          renderReport(found.nome, gerShort, records, semanaDates, anteriorDates);
+        });
+      });
     })();
 
 
