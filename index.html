@@ -415,6 +415,155 @@
     margin-top: 12px;
     max-width: 420px;
   }
+
+  /* Painel Ocorrências/Ruptura */
+  #panel-ocorrencias {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .oc-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .oc-field label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .oc-field input[type="date"],
+  .oc-field input[type="text"] {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .oc-status {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    padding-bottom: 9px;
+  }
+  .oc-summary-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    max-width: 420px;
+  }
+  .oc-chip {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+  .oc-chip b {
+    color: #f1f5f9;
+  }
+  .oc-form {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 14px;
+    max-width: 420px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .oc-form-row {
+    display: flex;
+    gap: 8px;
+  }
+  .oc-form input,
+  .oc-form select,
+  .oc-form textarea {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    width: 100%;
+  }
+  .oc-form textarea {
+    resize: vertical;
+    min-height: 34px;
+  }
+  .oc-form select {
+    appearance: none;
+  }
+  .oc-qtd {
+    width: 90px !important;
+    flex-shrink: 0;
+  }
+  .oc-add-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .oc-add-btn:hover { background: #2563eb; }
+  .oc-list {
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .oc-item {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 3px solid #64748b;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .oc-item.motivo-ruptura { border-left-color: #ef4444; }
+  .oc-item.motivo-avaria { border-left-color: #f59e0b; }
+  .oc-item.motivo-vencido { border-left-color: #a855f7; }
+  .oc-item.motivo-outro { border-left-color: #64748b; }
+  .oc-item-produto {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .oc-item-meta {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-top: 3px;
+  }
+  .oc-item-obs {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    margin-top: 5px;
+    font-style: italic;
+  }
+  .oc-item-del {
+    background: none;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    height: fit-content;
+  }
+  .oc-empty {
+    color: #64748b;
+    font-size: 0.85rem;
+    max-width: 420px;
+  }
 </style>
 </head>
 <body>
@@ -448,6 +597,9 @@
       </button>
       <button class="tab" data-target="panel-checklist">
         <span class="icon">✅</span> Checklist
+      </button>
+      <button class="tab" data-target="panel-ocorrencias">
+        <span class="icon">⚠️</span> Ocorrências
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -534,6 +686,40 @@
       <button class="ck-add-item" id="ck-add-item">+ Adicionar item</button>
 
       <div class="ck-summary" id="ck-summary"></div>
+    </div>
+
+    <div class="pane" id="panel-ocorrencias">
+      <div class="oc-toolbar">
+        <div class="oc-field">
+          <label>Dia</label>
+          <input type="date" id="oc-date">
+        </div>
+        <div class="oc-field">
+          <label>Quem registra</label>
+          <input type="text" id="oc-colaborador" placeholder="Seu nome">
+        </div>
+        <span id="oc-status" class="oc-status">🟡 Conectando…</span>
+      </div>
+
+      <div class="oc-summary-row" id="oc-summary-row"></div>
+
+      <div class="oc-form">
+        <div class="oc-form-row">
+          <input type="text" id="oc-produto" placeholder="Produto">
+          <input type="number" id="oc-qtd" class="oc-qtd" min="1" value="1" placeholder="Qtd">
+        </div>
+        <select id="oc-motivo">
+          <option value="ruptura">Ruptura</option>
+          <option value="avaria">Avaria</option>
+          <option value="vencido">Vencido</option>
+          <option value="outro">Outro</option>
+        </select>
+        <textarea id="oc-obs" placeholder="Observação (opcional)"></textarea>
+        <button class="oc-add-btn" id="oc-add-btn">+ Registrar ocorrência</button>
+      </div>
+
+      <div class="oc-list" id="oc-list"></div>
+      <p class="oc-empty" id="oc-empty" style="display:none;">Nenhuma ocorrência registrada neste dia.</p>
     </div>
   </div>
 
@@ -913,6 +1099,123 @@
 
       dateInput.value = todayStr();
       watchDay(dateInput.value, currentTurno);
+    })();
+
+    /* ===== Painel Ocorrências/Ruptura ===== */
+    (function () {
+      const dateInput = document.getElementById("oc-date");
+      const colaboradorInput = document.getElementById("oc-colaborador");
+      const statusEl = document.getElementById("oc-status");
+      const summaryRow = document.getElementById("oc-summary-row");
+      const listEl = document.getElementById("oc-list");
+      const emptyEl = document.getElementById("oc-empty");
+      const produtoInput = document.getElementById("oc-produto");
+      const qtdInput = document.getElementById("oc-qtd");
+      const motivoSelect = document.getElementById("oc-motivo");
+      const obsInput = document.getElementById("oc-obs");
+      const addBtn = document.getElementById("oc-add-btn");
+
+      const MOTIVO_LABEL = {
+        ruptura: "Ruptura",
+        avaria: "Avaria",
+        vencido: "Vencido",
+        outro: "Outro"
+      };
+
+      let currentRef = null;
+
+      db.ref(".info/connected").on("value", snap => {
+        statusEl.textContent = snap.val() ? "🟢 Sincronizado" : "🔴 Sem conexão";
+      });
+
+      function todayStr() {
+        const d = new Date();
+        const tz = d.getTimezoneOffset() * 60000;
+        return new Date(d - tz).toISOString().slice(0, 10);
+      }
+
+      function nowTime() {
+        return new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      }
+
+      function renderSummary(items) {
+        const counts = { ruptura: 0, avaria: 0, vencido: 0, outro: 0 };
+        items.forEach(i => { counts[i.motivo] = (counts[i.motivo] || 0) + (parseInt(i.qtd) || 0); });
+        summaryRow.innerHTML = Object.keys(MOTIVO_LABEL).map(m =>
+          `<span class="oc-chip">${MOTIVO_LABEL[m]}: <b>${counts[m] || 0}</b></span>`
+        ).join("");
+      }
+
+      function renderList(items) {
+        listEl.innerHTML = "";
+        emptyEl.style.display = items.length ? "none" : "block";
+        items.slice().reverse().forEach(item => {
+          const el = document.createElement("div");
+          el.className = "oc-item motivo-" + item.motivo;
+          el.innerHTML = `
+            <div>
+              <div class="oc-item-produto">${item.produto} <span style="color:#94a3b8;font-weight:400;">× ${item.qtd}</span></div>
+              <div class="oc-item-meta">${MOTIVO_LABEL[item.motivo] || item.motivo} · ${item.hora || ""}${item.colaborador ? " · " + item.colaborador : ""}</div>
+              ${item.obs ? `<div class="oc-item-obs">"${item.obs}"</div>` : ""}
+            </div>
+            <button class="oc-item-del" title="Remover">✕</button>
+          `;
+          el.querySelector(".oc-item-del").addEventListener("click", () => removeItem(item.id));
+          listEl.appendChild(el);
+        });
+        renderSummary(items);
+      }
+
+      function watchDay(date) {
+        if (currentRef) currentRef.off();
+        currentRef = db.ref("ocorrencias/" + date);
+        currentRef.on("value", snap => {
+          const data = snap.val() || {};
+          const items = Object.keys(data).map(id => Object.assign({ id }, data[id]));
+          items.sort((a, b) => (a.ts || 0) - (b.ts || 0));
+          renderList(items);
+        });
+      }
+
+      function addOcorrencia() {
+        const produto = produtoInput.value.trim();
+        if (!produto) {
+          produtoInput.focus();
+          return;
+        }
+        const entry = {
+          produto,
+          qtd: qtdInput.value || 1,
+          motivo: motivoSelect.value,
+          obs: obsInput.value.trim(),
+          colaborador: colaboradorInput.value || "",
+          hora: nowTime(),
+          ts: Date.now()
+        };
+        db.ref("ocorrencias/" + dateInput.value).push(entry);
+        produtoInput.value = "";
+        qtdInput.value = 1;
+        obsInput.value = "";
+        produtoInput.focus();
+      }
+
+      function removeItem(id) {
+        db.ref("ocorrencias/" + dateInput.value + "/" + id).remove();
+      }
+
+      addBtn.addEventListener("click", addOcorrencia);
+      produtoInput.addEventListener("keydown", e => {
+        if (e.key === "Enter") addOcorrencia();
+      });
+
+      dateInput.addEventListener("change", () => watchDay(dateInput.value));
+      colaboradorInput.addEventListener("change", () => {
+        localStorage.setItem("oc-colaborador", colaboradorInput.value);
+      });
+      colaboradorInput.value = localStorage.getItem("oc-colaborador") || "";
+
+      dateInput.value = todayStr();
+      watchDay(dateInput.value);
     })();
 
     // Registra o service worker para permitir instalar o app e abrir offline
