@@ -837,6 +837,158 @@
   .ind-history-table tr:hover td { background: #26334a55; }
   .ind-history-table tr.selected td { background: #3b82f633; }
   .ind-history-table tr:last-child td { border-bottom: none; }
+
+  /* Painel Avaliação de Desempenho */
+  #panel-avaliacao {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .av-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .av-field { flex: 1; min-width: 200px; max-width: 300px; }
+  .av-field label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .av-field select {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+  }
+  .av-status {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    padding-bottom: 9px;
+  }
+  .av-profile {
+    max-width: 460px;
+  }
+  .av-profile-header {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .av-profile-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .av-profile-funcao {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+  .av-score {
+    text-align: right;
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+  .av-score b.pos { color: #22c55e; font-size: 1rem; }
+  .av-score b.neg { color: #ef4444; font-size: 1rem; }
+  .av-form {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .av-tipo-toggle {
+    display: flex;
+    gap: 8px;
+  }
+  .av-tipo-btn {
+    flex: 1;
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 9px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .av-tipo-btn.active[data-tipo="positivo"] { background: #16241d; border-color: #22c55e; color: #22c55e; }
+  .av-tipo-btn.active[data-tipo="negativo"] { background: #2a1414; border-color: #ef4444; color: #ef4444; }
+  .av-form textarea {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 60px;
+  }
+  .av-form-submit {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .av-form-submit:hover { background: #2563eb; }
+  .av-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .av-note {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 3px solid #64748b;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .av-note.positivo { border-left-color: #22c55e; }
+  .av-note.negativo { border-left-color: #ef4444; }
+  .av-note-text {
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    line-height: 1.4;
+  }
+  .av-note-meta {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 4px;
+  }
+  .av-note-del {
+    background: none;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    height: fit-content;
+  }
+  .av-empty {
+    color: #64748b;
+    font-size: 0.9rem;
+    max-width: 460px;
+  }
 </style>
 </head>
 <body>
@@ -876,6 +1028,9 @@
       </button>
       <button class="tab" data-target="panel-sla">
         <span class="icon">📊</span> Indicadores
+      </button>
+      <button class="tab" data-target="panel-avaliacao">
+        <span class="icon">🌟</span> Avaliação
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1016,6 +1171,20 @@
       <div id="ind-result">
         <p class="ind-empty">Carregue arquivos de indicadores e selecione uma loja para ver o histórico.</p>
       </div>
+    </div>
+
+    <div class="pane" id="panel-avaliacao">
+      <script id="av-roster-data" type="application/json">[{"matricula": 7153570, "nome": "Anna Caroline", "funcao": "Op. Loja"}, {"matricula": 5624576, "nome": "Cláudia Regina", "funcao": "Op. Loja"}, {"matricula": 6427510, "nome": "Danillo de Souza", "funcao": "Op. Loja"}, {"matricula": 6005225, "nome": "Francicleide dos Santos", "funcao": "Op. Loja"}, {"matricula": 5885264, "nome": "Joselito Dias Sobreira", "funcao": "Op. Loja"}, {"matricula": 5646375, "nome": "Lizandra Araujo", "funcao": "Op. Loja"}, {"matricula": 6528910, "nome": "Matheus Carlos", "funcao": "Op. Loja"}, {"matricula": 7026595, "nome": "Maria Eduarda", "funcao": "Op. Loja"}, {"matricula": 6899153, "nome": "Nataniel Sousa", "funcao": "Op. Loja"}, {"matricula": 6755461, "nome": "Simone do Carmo", "funcao": "Op. Loja"}, {"matricula": 7026013, "nome": "Victoria Aquino", "funcao": "Op. Loja"}, {"matricula": 6465951, "nome": "Alfredo Nascimento", "funcao": "Op. Loja"}, {"matricula": 5361060, "nome": "Gabriel Martins", "funcao": "Op. Loja"}, {"matricula": 4275195, "nome": "Gleyce Kelly", "funcao": "Op. Loja"}, {"matricula": 5568978, "nome": "Felipe Mota", "funcao": "Pleno"}, {"matricula": 7231784, "nome": "Andrey da Costa", "funcao": "Op. Loja"}, {"matricula": 6926177, "nome": "Alohan da Costa", "funcao": "Op. Loja"}, {"matricula": 7237316, "nome": "Daniele Teixeira", "funcao": "Op. Loja"}, {"matricula": 7216165, "nome": "Deivison Vieira", "funcao": "Op. Loja"}, {"matricula": 7237308, "nome": "Fernanda Pereira", "funcao": "Op. Loja"}, {"matricula": 7029578, "nome": "Jonas Felipe", "funcao": "Op. Loja"}, {"matricula": 7160542, "nome": "Kamili Conceição", "funcao": "Op. Loja"}, {"matricula": 7115261, "nome": "Leonard Gerard", "funcao": "Op. Loja"}, {"matricula": 7029322, "nome": "Marcelo da Silva", "funcao": "Op. Loja"}, {"matricula": 7014252, "nome": "Suelen da Silva", "funcao": "Op. Loja"}, {"matricula": 7122659, "nome": "Talia Mesquita", "funcao": "Op. Loja"}, {"matricula": 7164289, "nome": "Taissa Ferreira", "funcao": "Op. Loja"}, {"matricula": 6259731, "nome": "Guilherme Veras", "funcao": "Op. Loja"}, {"matricula": 6739733, "nome": "Lohan Rodrigues", "funcao": "Op. Loja"}]</script>
+
+      <div class="av-toolbar">
+        <div class="av-field">
+          <label>Colaborador</label>
+          <select id="av-colaborador"></select>
+        </div>
+        <span id="av-status" class="av-status">🟡 Conectando…</span>
+      </div>
+
+      <div id="av-content"></div>
     </div>
   </div>
 
@@ -1843,6 +2012,145 @@
         const val = searchInput.value.trim();
         const found = (window.__indLojas || []).find(e => e.nome === val);
         if (found) loadStoreHistory(found.slug);
+      });
+    })();
+
+    /* ===== Avaliação de Desempenho por Colaborador ===== */
+    (function () {
+      const BASE_ROSTER = JSON.parse(document.getElementById("av-roster-data").textContent);
+      const colaboradorSelect = document.getElementById("av-colaborador");
+      const statusEl = document.getElementById("av-status");
+      const contentEl = document.getElementById("av-content");
+
+      let liveEmployees = BASE_ROSTER.slice();
+      let currentMatricula = null;
+      let notesCache = {};
+
+      db.ref(".info/connected").on("value", snap => {
+        statusEl.textContent = snap.val() ? "🟢 Sincronizado" : "🔴 Sem conexão";
+      });
+
+      // Reaproveita a mesma lógica da Escala Digital: base + customEmployees - deletedEmployees + employeeEdits
+      db.ref("state").on("value", snap => {
+        const state = snap.val() || {};
+        const deleted = state.deletedEmployees || [];
+        const edits = state.employeeEdits || {};
+        const custom = state.customEmployees || [];
+
+        const base = BASE_ROSTER
+          .filter(e => !deleted.includes(e.matricula))
+          .map(e => Object.assign({}, e, edits[String(e.matricula)] || {}));
+        const customList = custom.map(e => Object.assign({}, e, edits[String(e.matricula)] || {}));
+
+        liveEmployees = [...base, ...customList].sort((a, b) => a.nome.localeCompare(b.nome, "pt"));
+        renderColaboradorOptions();
+      });
+
+      function renderColaboradorOptions() {
+        const prevVal = colaboradorSelect.value;
+        colaboradorSelect.innerHTML = liveEmployees
+          .map(e => `<option value="${e.matricula}">${e.nome}${e.funcao ? " — " + e.funcao : ""}</option>`)
+          .join("");
+        if (prevVal && liveEmployees.some(e => String(e.matricula) === prevVal)) {
+          colaboradorSelect.value = prevVal;
+        }
+        if (colaboradorSelect.value) {
+          loadColaborador(colaboradorSelect.value);
+        }
+      }
+
+      function nowStr() {
+        return new Date().toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      }
+
+      function renderTimeline(matricula) {
+        const employee = liveEmployees.find(e => String(e.matricula) === String(matricula));
+        if (!employee) return;
+
+        const notesObj = notesCache[matricula] || {};
+        const notes = Object.keys(notesObj)
+          .map(id => Object.assign({ id }, notesObj[id]))
+          .sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+        const pos = notes.filter(n => n.tipo === "positivo").length;
+        const neg = notes.filter(n => n.tipo === "negativo").length;
+
+        contentEl.innerHTML = `
+          <div class="av-profile">
+            <div class="av-profile-header">
+              <div>
+                <div class="av-profile-name">${employee.nome}</div>
+                <div class="av-profile-funcao">${employee.funcao || ""}</div>
+              </div>
+              <div class="av-score">
+                <b class="pos">${pos}</b> positivas &nbsp; <b class="neg">${neg}</b> negativas
+              </div>
+            </div>
+
+            <div class="av-form">
+              <div class="av-tipo-toggle">
+                <button class="av-tipo-btn active" data-tipo="positivo" type="button">👍 Positivo</button>
+                <button class="av-tipo-btn" data-tipo="negativo" type="button">👎 Negativo</button>
+              </div>
+              <textarea id="av-texto" placeholder="Descreva o ocorrido..."></textarea>
+              <button class="av-form-submit" id="av-submit">+ Registrar anotação</button>
+            </div>
+
+            <div class="av-timeline" id="av-timeline">
+              ${notes.length ? notes.map(n => `
+                <div class="av-note ${n.tipo}">
+                  <div>
+                    <div class="av-note-text">${n.texto}</div>
+                    <div class="av-note-meta">${n.tipo === "positivo" ? "👍" : "👎"} ${n.dataStr || ""}</div>
+                  </div>
+                  <button class="av-note-del" data-id="${n.id}" title="Remover">✕</button>
+                </div>`).join("") : '<p class="av-empty">Nenhuma anotação registrada ainda.</p>'}
+            </div>
+          </div>`;
+
+        let tipoSelecionado = "positivo";
+        contentEl.querySelectorAll(".av-tipo-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            contentEl.querySelectorAll(".av-tipo-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            tipoSelecionado = btn.dataset.tipo;
+          });
+        });
+
+        document.getElementById("av-submit").addEventListener("click", () => {
+          const texto = document.getElementById("av-texto").value.trim();
+          if (!texto) return;
+          db.ref("avaliacoes/" + matricula).push({
+            tipo: tipoSelecionado,
+            texto,
+            dataStr: nowStr(),
+            ts: Date.now()
+          });
+          document.getElementById("av-texto").value = "";
+        });
+
+        contentEl.querySelectorAll(".av-note-del").forEach(btn => {
+          btn.addEventListener("click", () => {
+            db.ref("avaliacoes/" + matricula + "/" + btn.dataset.id).remove();
+          });
+        });
+      }
+
+      function loadColaborador(matricula) {
+        currentMatricula = matricula;
+        if (notesCache[matricula]) {
+          renderTimeline(matricula);
+        }
+        db.ref("avaliacoes/" + matricula).on("value", snap => {
+          notesCache[matricula] = snap.val() || {};
+          if (String(currentMatricula) === String(matricula)) {
+            renderTimeline(matricula);
+          }
+        });
+      }
+
+      colaboradorSelect.addEventListener("change", () => {
+        loadColaborador(colaboradorSelect.value);
       });
     })();
 
