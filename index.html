@@ -1187,6 +1187,117 @@
     .rel-val.ok { color: #16a34a !important; }
     .rel-val.bad { color: #dc2626 !important; }
   }
+
+  /* Painel Comparativo entre Lojas */
+  #panel-comparativo {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .cmp-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .cmp-field { flex: 1; min-width: 180px; max-width: 280px; }
+  .cmp-field label {
+    display: block;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .cmp-field input {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  .cmp-add-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .cmp-add-btn:hover { background: #2563eb; }
+  .cmp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .cmp-chip {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 6px 8px 6px 14px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cmp-chip button {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 2px 4px;
+  }
+  .cmp-chip button:hover { color: #ef4444; }
+  .cmp-table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .cmp-table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    min-width: 100%;
+  }
+  .cmp-table th, .cmp-table td {
+    padding: 9px 12px;
+    text-align: center;
+    border-bottom: 1px solid #26334a;
+    white-space: nowrap;
+  }
+  .cmp-table th:first-child, .cmp-table td:first-child {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: #0f172a;
+  }
+  .cmp-table th {
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .cmp-table td.best { color: #22c55e; font-weight: 700; }
+  .cmp-table td.worst { color: #ef4444; }
+  .cmp-table td.nodata { color: #475569; }
+  .cmp-rank {
+    max-width: 480px;
+    margin-top: 20px;
+  }
+  .cmp-rank-item {
+    display: flex;
+    justify-content: space-between;
+    background: #1e293b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+  }
+  .cmp-rank-item b { color: #f1f5f9; }
+  .cmp-empty { color: #64748b; font-size: 0.9rem; max-width: 480px; }
 </style>
 </head>
 <body>
@@ -1235,6 +1346,9 @@
       </button>
       <button class="tab" data-target="panel-relatorio">
         <span class="icon">📄</span> Relatório
+      </button>
+      <button class="tab" data-target="panel-comparativo">
+        <span class="icon">⚖️</span> Comparativo
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1445,6 +1559,27 @@
 
       <div id="rel-output">
         <p class="rel-empty">Escolha a loja e a semana, depois clique em "Gerar relatório".</p>
+      </div>
+    </div>
+
+    <div class="pane" id="panel-comparativo">
+      <div class="cmp-toolbar">
+        <div class="cmp-field">
+          <label>Adicionar loja</label>
+          <input type="text" id="cmp-loja-search" list="cmp-loja-datalist" placeholder="Digite o nome da loja...">
+          <datalist id="cmp-loja-datalist"></datalist>
+        </div>
+        <div class="cmp-field">
+          <label>Data (snapshot)</label>
+          <input type="date" id="cmp-data">
+        </div>
+        <button class="cmp-add-btn" id="cmp-add-btn">+ Adicionar</button>
+      </div>
+
+      <div class="cmp-chips" id="cmp-chips"></div>
+
+      <div id="cmp-output">
+        <p class="cmp-empty">Adicione 2 ou mais lojas pra comparar os indicadores lado a lado.</p>
       </div>
     </div>
   </div>
@@ -2657,6 +2792,155 @@
           renderReport(found.nome, gerShort, records, semanaDates, anteriorDates);
         });
       });
+    })();
+
+    /* ===== Comparativo entre Lojas ===== */
+    (function () {
+      const searchInput = document.getElementById("cmp-loja-search");
+      const datalist = document.getElementById("cmp-loja-datalist");
+      const dataInput = document.getElementById("cmp-data");
+      const addBtn = document.getElementById("cmp-add-btn");
+      const chipsEl = document.getElementById("cmp-chips");
+      const outputEl = document.getElementById("cmp-output");
+
+      const METRICS = [
+        { key: "cancelOn", title: "Cancelamento Total", meta: 5, higherBad: true },
+        { key: "rupturaOn", title: "Ruptura de Item", meta: 5, higherBad: true },
+        { key: "capFatOn", title: "Cap / Faturamento", meta: 85, higherBad: false },
+        { key: "tempoOnOn", title: "Tempo Online", meta: 95, higherBad: false },
+        { key: "slaPrepOn", title: "SLA Preparo", meta: 85, higherBad: false },
+        { key: "slaEntOn", title: "SLA de Entrega", meta: 85, higherBad: false },
+        { key: "nsuOn", title: "NSU (entreg. na loja)", meta: 12, higherBad: true },
+        { key: "vendaPerdidaOn", title: "Venda Perdida", meta: 15, higherBad: true }
+      ];
+
+      let lojasCache = [];
+      let selected = []; // { slug, nome }
+
+      db.ref("indicadores_index").once("value").then(snap => {
+        const data = snap.val() || {};
+        lojasCache = Object.keys(data).map(slug => ({ slug, nome: data[slug] }));
+        lojasCache.sort((a, b) => a.nome.localeCompare(b.nome, "pt"));
+        datalist.innerHTML = lojasCache.map(e => `<option value="${e.nome}">`).join("");
+      });
+
+      function todayISO() {
+        const d = new Date();
+        const tz = d.getTimezoneOffset() * 60000;
+        return new Date(d - tz).toISOString().slice(0, 10);
+      }
+      dataInput.value = todayISO();
+
+      function renderChips() {
+        chipsEl.innerHTML = selected.map(s => `
+          <span class="cmp-chip">${s.nome} <button data-slug="${s.slug}">✕</button></span>`).join("");
+        chipsEl.querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", () => {
+            selected = selected.filter(s => s.slug !== btn.dataset.slug);
+            renderChips();
+            renderComparison();
+          });
+        });
+      }
+
+      addBtn.addEventListener("click", () => {
+        const nome = searchInput.value.trim();
+        const found = lojasCache.find(l => l.nome === nome);
+        if (!found) return;
+        if (selected.some(s => s.slug === found.slug)) return;
+        if (selected.length >= 6) return;
+        selected.push(found);
+        searchInput.value = "";
+        renderChips();
+        renderComparison();
+      });
+      searchInput.addEventListener("keydown", e => {
+        if (e.key === "Enter") addBtn.click();
+      });
+      dataInput.addEventListener("change", renderComparison);
+
+      function closestRecord(records, targetDate) {
+        const dates = Object.keys(records).sort();
+        if (records[targetDate]) return { date: targetDate, record: records[targetDate] };
+        const before = dates.filter(d => d <= targetDate);
+        if (before.length) {
+          const d = before[before.length - 1];
+          return { date: d, record: records[d] };
+        }
+        return null;
+      }
+
+      async function renderComparison() {
+        if (selected.length < 2) {
+          outputEl.innerHTML = '<p class="cmp-empty">Adicione 2 ou mais lojas pra comparar os indicadores lado a lado.</p>';
+          return;
+        }
+        outputEl.innerHTML = '<p class="cmp-empty">Carregando…</p>';
+        const targetDate = dataInput.value;
+
+        const results = await Promise.all(selected.map(async s => {
+          const snap = await db.ref("indicadores/" + s.slug).once("value");
+          const records = snap.val() || {};
+          const found = closestRecord(records, targetDate);
+          return { nome: s.nome, slug: s.slug, date: found ? found.date : null, record: found ? found.record : null };
+        }));
+
+        const rowsHtml = METRICS.map(m => {
+          const vals = results.map(r => r.record ? r.record[m.key] : null);
+          const validVals = vals.filter(v => v !== null && v !== undefined);
+          const best = validVals.length ? (m.higherBad ? Math.min(...validVals) : Math.max(...validVals)) : null;
+          const worst = validVals.length ? (m.higherBad ? Math.max(...validVals) : Math.min(...validVals)) : null;
+
+          const cells = vals.map(v => {
+            if (v === null || v === undefined) return `<td class="nodata">—</td>`;
+            let cls = "";
+            if (validVals.length > 1) {
+              if (v === best) cls = "best";
+              else if (v === worst) cls = "worst";
+            }
+            return `<td class="${cls}">${v.toFixed(1)}%${cls === "best" ? " 🏆" : ""}</td>`;
+          }).join("");
+
+          return `<tr><td>${m.title}<br><span style="font-size:0.68rem;color:#64748b;">meta ${m.higherBad ? "≤" : "≥"} ${m.meta}%</span></td>${cells}</tr>`;
+        }).join("");
+
+        // Ranking geral entre as lojas selecionadas
+        const scores = results.map(r => {
+          let ok = 0, total = 0;
+          if (r.record) {
+            METRICS.forEach(m => {
+              const v = r.record[m.key];
+              if (v === undefined) return;
+              total++;
+              const bad = m.higherBad ? v > m.meta : v < m.meta;
+              if (!bad) ok++;
+            });
+          }
+          return { nome: r.nome, ok, total };
+        }).sort((a, b) => (b.total ? b.ok / b.total : 0) - (a.total ? a.ok / a.total : 0));
+
+        outputEl.innerHTML = `
+          <div class="cmp-table-wrap">
+            <table class="cmp-table">
+              <thead>
+                <tr>
+                  <th>Indicador</th>
+                  ${results.map(r => `<th>${r.nome}${r.date && r.date !== targetDate ? `<br><span style="font-weight:400;color:#64748b;">(${r.date})</span>` : ""}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+
+          <div class="cmp-rank">
+            <div class="fe-section-title">🏅 Ranking (indicadores dentro da meta)</div>
+            ${scores.map((s, i) => `
+              <div class="cmp-rank-item">
+                <span>${i + 1}º — ${s.nome}</span>
+                <b>${s.ok}/${s.total}</b>
+              </div>`).join("")}
+          </div>`;
+      }
     })();
 
 
