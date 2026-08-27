@@ -564,6 +564,279 @@
     font-size: 0.85rem;
     max-width: 420px;
   }
+
+  /* Indicadores por loja */
+  .ind-upload {
+    background: #1e293b;
+    border: 1px dashed #334155;
+    border-radius: 10px;
+    padding: 16px;
+    max-width: 460px;
+    margin-bottom: 16px;
+  }
+  .ind-upload label {
+    display: block;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+  .ind-upload input[type="file"] {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    max-width: 100%;
+  }
+  .ind-file-status {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: #22c55e;
+  }
+  .ind-pending-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ind-pending-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+  }
+  .ind-pending-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ind-pending-row input[type="date"] {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+  }
+  .ind-pending-row.missing input[type="date"] { border-color: #ef4444; }
+  .ind-save-btn {
+    margin-top: 12px;
+    background: #22c55e;
+    color: #0f172a;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .ind-save-btn:hover { background: #16a34a; }
+  .ind-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ind-search-wrap {
+    max-width: 460px;
+    margin-bottom: 18px;
+  }
+  .ind-search-wrap label {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 4px;
+  }
+  .ind-search-wrap input {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+  }
+  .ind-card {
+    max-width: 460px;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .ind-card-header {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #334155;
+  }
+  .ind-store-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .ind-store-meta {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-top: 3px;
+  }
+
+  /* Resumo geral */
+  .ind-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+  }
+  .ind-summary.good { background: #14251c; border: 1px solid #22c55e44; }
+  .ind-summary.mid { background: #2a2013; border: 1px solid #f59e0b44; }
+  .ind-summary.bad { background: #2a1414; border: 1px solid #ef444444; }
+  .ind-summary-num {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .ind-summary.good .ind-summary-num { color: #22c55e; }
+  .ind-summary.mid .ind-summary-num { color: #f59e0b; }
+  .ind-summary.bad .ind-summary-num { color: #ef4444; }
+  .ind-summary-txt {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    line-height: 1.3;
+  }
+
+  /* Categorias */
+  .ind-category {
+    margin-bottom: 18px;
+  }
+  .ind-category:last-child { margin-bottom: 0; }
+  .ind-category-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* Métrica individual com barra */
+  .ind-metric {
+    padding: 9px 0;
+    border-bottom: 1px solid #26334a;
+  }
+  .ind-metric:last-child { border-bottom: none; }
+  .ind-metric-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+  }
+  .ind-metric-label {
+    font-size: 0.83rem;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ind-metric-value-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ind-metric-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .ind-metric-value.ok { color: #22c55e; }
+  .ind-metric-value.bad { color: #ef4444; }
+  .ind-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ind-dot.bad { background: #ef4444; }
+
+  .ind-bar-track {
+    position: relative;
+    height: 8px;
+    background: #0f172a;
+    border-radius: 5px;
+    overflow: visible;
+  }
+  .ind-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s;
+  }
+  .ind-bar-fill.ok { background: #22c55e; }
+  .ind-bar-fill.bad { background: #ef4444; }
+  .ind-bar-meta-marker {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 14px;
+    background: #f1f5f9;
+    opacity: 0.55;
+  }
+  .ind-metric-sub {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.66rem;
+    color: #64748b;
+    margin-top: 3px;
+  }
+  .ind-meta-note {
+    font-size: 0.68rem;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .ind-empty {
+    color: #64748b;
+    font-size: 0.85rem;
+    max-width: 460px;
+  }
+
+  .ind-date-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .ind-date-row label {
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+  .ind-date-select, .ind-month-select {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+  }
+  .ind-section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 20px 0 10px;
+  }
+  .ind-history-table {
+    max-width: 460px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .ind-history-table th, .ind-history-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #26334a;
+  }
+  .ind-history-table th { color: #64748b; font-weight: 600; font-size: 0.7rem; text-transform: uppercase; }
+  .ind-history-table tr { cursor: pointer; }
+  .ind-history-table tr:hover td { background: #26334a55; }
+  .ind-history-table tr.selected td { background: #3b82f633; }
+  .ind-history-table tr:last-child td { border-bottom: none; }
 </style>
 </head>
 <body>
@@ -600,6 +873,9 @@
       </button>
       <button class="tab" data-target="panel-ocorrencias">
         <span class="icon">⚠️</span> Ocorrências
+      </button>
+      <button class="tab" data-target="panel-sla">
+        <span class="icon">📊</span> Indicadores
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -720,6 +996,26 @@
 
       <div class="oc-list" id="oc-list"></div>
       <p class="oc-empty" id="oc-empty" style="display:none;">Nenhuma ocorrência registrada neste dia.</p>
+    </div>
+
+    <div class="pane" id="panel-sla">
+      <div class="ind-upload">
+        <label>Carregar arquivo(s) de indicadores (.html) — pode selecionar vários de uma vez. Cada um vira um dia no histórico.</label>
+        <input type="file" id="ind-file-input" accept=".html,.htm" multiple>
+        <div class="ind-pending-list" id="ind-pending-list"></div>
+        <button class="ind-save-btn" id="ind-save-btn" style="display:none;">💾 Salvar no histórico</button>
+        <div class="ind-file-status" id="ind-file-status"></div>
+      </div>
+
+      <div class="ind-search-wrap">
+        <label>Buscar loja</label>
+        <input type="text" id="ind-search" list="ind-datalist" placeholder="Carregando lojas…" disabled>
+        <datalist id="ind-datalist"></datalist>
+      </div>
+
+      <div id="ind-result">
+        <p class="ind-empty">Carregue arquivos de indicadores e selecione uma loja para ver o histórico.</p>
+      </div>
     </div>
   </div>
 
@@ -1218,7 +1514,339 @@
       watchDay(dateInput.value);
     })();
 
-    // Registra o service worker para permitir instalar o app e abrir offline
+    /* ===== Indicadores por Loja: upload múltiplo + histórico + média mensal ===== */
+    (function () {
+      const fileInput = document.getElementById("ind-file-input");
+      const pendingListEl = document.getElementById("ind-pending-list");
+      const saveBtn = document.getElementById("ind-save-btn");
+      const fileStatus = document.getElementById("ind-file-status");
+      const searchInput = document.getElementById("ind-search");
+      const datalist = document.getElementById("ind-datalist");
+      const resultEl = document.getElementById("ind-result");
+
+      const METRICS = [
+        { key: "cancelOn", title: "Cancelamento Total", meta: 5, higherBad: true, icon: "❌", categoria: "Cancelamento" },
+        { key: "rupturaOn", title: "Ruptura de Item", meta: 5, higherBad: true, icon: "📦", categoria: "Operação" },
+        { key: "capFatOn", title: "Cap / Faturamento", meta: 85, higherBad: false, icon: "📈", categoria: "Operação" },
+        { key: "tempoOnOn", title: "Tempo Online", meta: 95, higherBad: false, icon: "🟢", categoria: "Operação" },
+        { key: "slaPrepOn", title: "SLA Preparo", meta: 85, higherBad: false, icon: "⏱️", categoria: "SLA" },
+        { key: "slaEntOn", title: "SLA de Entrega", meta: 85, higherBad: false, icon: "🚀", categoria: "SLA" },
+        { key: "nsuOn", title: "NSU (entregador na loja)", meta: 12, higherBad: true, icon: "🚚", categoria: "SLA" },
+        { key: "vendaPerdidaOn", title: "Venda Perdida", meta: 15, higherBad: true, icon: "💰", categoria: "Financeiro", isCurrency: true, rsKey: "vendaPerdidaRS" }
+      ];
+      const CATS = ["Cancelamento", "Operação", "SLA", "Financeiro"];
+
+      let pendingFiles = []; // { file, dateStr }
+      let currentSlug = null;
+      let currentRecords = null; // { date: metrics }
+      let currentDate = null;
+
+      function slugify(str) {
+        return str
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "_")
+          .replace(/^_+|_+$/g, "")
+          .slice(0, 120);
+      }
+
+      function extractBetween(text, startMarker, endMarker) {
+        const start = text.indexOf(startMarker);
+        if (start === -1) return null;
+        const contentStart = start + startMarker.length;
+        const end = text.indexOf(endMarker, contentStart);
+        if (end === -1) return null;
+        let str = text.slice(contentStart, end).trim();
+        if (str.endsWith(";")) str = str.slice(0, -1);
+        return str;
+      }
+
+      function parseIndicadoresFile(text) {
+        const dStr = extractBetween(text, "const D=", "const METRICS=");
+        if (!dStr) throw new Error("Não encontrei os dados (const D=) no arquivo.");
+        const D = JSON.parse(dStr);
+        const stores = [];
+        Object.keys(D.ger_slides).forEach(gerKey => {
+          const grp = D.ger_slides[gerKey];
+          const short = (D.ger_groups.find(g => g.gerReg === gerKey) || {}).gerShort || gerKey;
+          grp.stores.forEach(s => {
+            stores.push(Object.assign({}, s, { gerReg: gerKey, gerShort: short }));
+          });
+        });
+        return { stores, global: D.global };
+      }
+
+      function guessDateFromFilename(name) {
+        let m = name.match(/(\d{4})-(\d{2})-(\d{2})/);
+        if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+        m = name.match(/(\d{2})[-_](\d{2})[-_](\d{4})/);
+        if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+        return "";
+      }
+
+      function renderPendingList() {
+        if (!pendingFiles.length) {
+          pendingListEl.innerHTML = "";
+          saveBtn.style.display = "none";
+          return;
+        }
+        pendingListEl.innerHTML = pendingFiles.map((p, i) => `
+          <div class="ind-pending-row ${p.dateStr ? "" : "missing"}">
+            <span class="ind-pending-name" title="${p.file.name}">${p.file.name}</span>
+            <input type="date" data-idx="${i}" value="${p.dateStr}">
+          </div>`).join("");
+        saveBtn.style.display = "inline-block";
+        pendingListEl.querySelectorAll('input[type="date"]').forEach(inp => {
+          inp.addEventListener("change", () => {
+            pendingFiles[parseInt(inp.dataset.idx)].dateStr = inp.value;
+            renderPendingList();
+          });
+        });
+      }
+
+      fileInput.addEventListener("change", () => {
+        const files = Array.from(fileInput.files || []);
+        pendingFiles = files.map(f => ({ file: f, dateStr: guessDateFromFilename(f.name) }));
+        fileStatus.textContent = "";
+        renderPendingList();
+      });
+
+      function readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsText(file, "UTF-8");
+        });
+      }
+
+      saveBtn.addEventListener("click", async () => {
+        const missing = pendingFiles.filter(p => !p.dateStr);
+        if (missing.length) {
+          fileStatus.style.color = "#ef4444";
+          fileStatus.textContent = "Preencha a data de todos os arquivos antes de salvar (data que os dados representam, D-1).";
+          return;
+        }
+        saveBtn.disabled = true;
+        let totalLojas = 0;
+        const diasSalvos = [];
+        try {
+          for (const p of pendingFiles) {
+            fileStatus.style.color = "#94a3b8";
+            fileStatus.textContent = `Salvando ${p.file.name} (${p.dateStr})…`;
+            const text = await readFileAsText(p.file);
+            const parsed = parseIndicadoresFile(text);
+            const updates = {};
+            parsed.stores.forEach(s => {
+              const slug = slugify(s.nome);
+              const record = Object.assign({}, s);
+              delete record.nome;
+              record.nome = s.nome;
+              updates["indicadores/" + slug + "/" + p.dateStr] = record;
+              updates["indicadores_index/" + slug] = s.nome;
+            });
+            updates["indicadores_global/" + p.dateStr] = parsed.global;
+            await db.ref().update(updates);
+            totalLojas = parsed.stores.length;
+            diasSalvos.push(p.dateStr);
+          }
+          fileStatus.style.color = "#22c55e";
+          fileStatus.textContent = `✔ ${totalLojas} lojas salvas para ${diasSalvos.length} dia(s): ${diasSalvos.join(", ")}`;
+          pendingFiles = [];
+          fileInput.value = "";
+          renderPendingList();
+          loadIndex();
+        } catch (err) {
+          fileStatus.style.color = "#ef4444";
+          fileStatus.textContent = "Erro ao salvar: " + err.message;
+        }
+        saveBtn.disabled = false;
+      });
+
+      function loadIndex() {
+        db.ref("indicadores_index").once("value").then(snap => {
+          const data = snap.val() || {};
+          const entries = Object.keys(data).map(slug => ({ slug, nome: data[slug] }));
+          entries.sort((a, b) => a.nome.localeCompare(b.nome, "pt"));
+          datalist.innerHTML = entries.map(e => `<option value="${e.nome}" data-slug="${e.slug}">`).join("");
+          searchInput.disabled = false;
+          searchInput.placeholder = entries.length ? "Digite o nome da loja..." : "Nenhuma loja salva ainda";
+          window.__indLojas = entries;
+        });
+      }
+      loadIndex();
+
+      function barPct(val) { return Math.max(0, Math.min(100, val)); }
+
+      function renderMetric(m, record, globalRecord) {
+        const val = record[m.key];
+        if (val === undefined) return "";
+        const bad = m.higherBad ? val > m.meta : val < m.meta;
+        const globalVal = globalRecord ? globalRecord[m.key] : null;
+        const rsExtra = m.rsKey && record[m.rsKey] !== undefined
+          ? `R$ ${Math.round(record[m.rsKey]).toLocaleString("pt-BR")}`
+          : "";
+        return `
+          <div class="ind-metric">
+            <div class="ind-metric-top">
+              <span class="ind-metric-label">${m.icon} ${m.title}</span>
+              <span class="ind-metric-value-wrap">
+                <span class="ind-metric-value ${bad ? "bad" : "ok"}">${val.toFixed(1)}%</span>
+                <span class="ind-dot ${bad ? "bad" : "ok"}"></span>
+              </span>
+            </div>
+            <div class="ind-bar-track">
+              <div class="ind-bar-fill ${bad ? "bad" : "ok"}" style="width:${barPct(val)}%"></div>
+              <div class="ind-bar-meta-marker" style="left:${m.meta}%" title="Meta: ${m.meta}%"></div>
+            </div>
+            <div class="ind-metric-sub">
+              <span>${m.higherBad ? "meta ≤" : "meta ≥"} ${m.meta}%${globalVal !== null && globalVal !== undefined ? ` · rede: ${globalVal.toFixed ? globalVal.toFixed(1) : globalVal}%` : ""}</span>
+              <span>${rsExtra}</span>
+            </div>
+          </div>`;
+      }
+
+      function renderSnapshot(record, globalRecord) {
+        let okCount = 0, total = 0;
+        METRICS.forEach(m => {
+          if (record[m.key] === undefined) return;
+          total++;
+          const bad = m.higherBad ? record[m.key] > m.meta : record[m.key] < m.meta;
+          if (!bad) okCount++;
+        });
+        const ratio = total ? okCount / total : 0;
+        const summaryClass = ratio >= 0.75 ? "good" : ratio >= 0.5 ? "mid" : "bad";
+        const summaryEmoji = ratio >= 0.75 ? "✅" : ratio >= 0.5 ? "⚠️" : "🔴";
+        const catsHtml = CATS.map(cat => {
+          const ms = METRICS.filter(m => m.categoria === cat && record[m.key] !== undefined);
+          if (!ms.length) return "";
+          return `<div class="ind-category">
+            <div class="ind-category-title">${cat}</div>
+            ${ms.map(m => renderMetric(m, record, globalRecord)).join("")}
+          </div>`;
+        }).join("");
+        return `
+          <div class="ind-summary ${summaryClass}">
+            <div class="ind-summary-num">${summaryEmoji} ${okCount}/${total}</div>
+            <div class="ind-summary-txt">indicadores dentro da meta<br>o traço na barra marca a meta de cada indicador</div>
+          </div>
+          ${catsHtml}`;
+      }
+
+      function computeAverage(records, dates) {
+        const avg = {};
+        const keys = METRICS.map(m => m.key).concat(METRICS.filter(m => m.rsKey).map(m => m.rsKey));
+        keys.forEach(k => {
+          const vals = dates.map(d => records[d][k]).filter(v => v !== undefined && v !== null);
+          if (vals.length) avg[k] = vals.reduce((a, b) => a + b, 0) / vals.length;
+        });
+        return avg;
+      }
+
+      function fmtDateBR(d) {
+        const [y, m, day] = d.split("-");
+        return `${day}/${m}/${y}`;
+      }
+
+      function renderStoreView() {
+        const dates = Object.keys(currentRecords).sort().reverse();
+        if (!dates.includes(currentDate)) currentDate = dates[0];
+        const record = currentRecords[currentDate];
+        const currentMonth = currentDate.slice(0, 7);
+        const months = [...new Set(dates.map(d => d.slice(0, 7)))].sort().reverse();
+        const monthDates = dates.filter(d => d.startsWith(currentMonth));
+        const avgRecord = computeAverage(currentRecords, monthDates);
+
+        resultEl.innerHTML = `
+          <div class="ind-card">
+            <div class="ind-card-header">
+              <div class="ind-store-name">${record.nome}</div>
+              <div class="ind-store-meta">Gerente Regional: ${record.gerShort} · ${dates.length} dia(s) no histórico</div>
+            </div>
+
+            <div class="ind-date-row">
+              <label>Ver dados do dia:</label>
+              <select class="ind-date-select" id="ind-date-select">
+                ${dates.map(d => `<option value="${d}" ${d === currentDate ? "selected" : ""}>${fmtDateBR(d)}</option>`).join("")}
+              </select>
+            </div>
+
+            <div id="ind-snapshot-area">${renderSnapshot(record)}</div>
+
+            <div class="ind-section-label">📅 Média mensal</div>
+            <div class="ind-date-row">
+              <label>Mês:</label>
+              <select class="ind-month-select" id="ind-month-select">
+                ${months.map(m => `<option value="${m}" ${m === currentMonth ? "selected" : ""}>${m}</option>`).join("")}
+              </select>
+              <span style="font-size:0.72rem;color:#64748b;">${monthDates.length} dia(s) considerados</span>
+            </div>
+            <div id="ind-avg-area">${renderSnapshot(avgRecord)}</div>
+
+            <div class="ind-section-label">🕒 Histórico completo</div>
+            <table class="ind-history-table">
+              <thead><tr><th>Data</th><th>Meta</th><th>Cancel.</th><th>Ruptura</th></tr></thead>
+              <tbody id="ind-history-body">
+                ${dates.map(d => {
+                  const r = currentRecords[d];
+                  let ok = 0, tot = 0;
+                  METRICS.forEach(m => {
+                    if (r[m.key] === undefined) return;
+                    tot++;
+                    const bad = m.higherBad ? r[m.key] > m.meta : r[m.key] < m.meta;
+                    if (!bad) ok++;
+                  });
+                  return `<tr data-date="${d}" class="${d === currentDate ? "selected" : ""}">
+                    <td>${fmtDateBR(d)}</td>
+                    <td>${ok}/${tot}</td>
+                    <td>${(r.cancelOn ?? 0).toFixed(1)}%</td>
+                    <td>${(r.rupturaOn ?? 0).toFixed(1)}%</td>
+                  </tr>`;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>`;
+
+        document.getElementById("ind-date-select").addEventListener("change", e => {
+          currentDate = e.target.value;
+          renderStoreView();
+        });
+        document.getElementById("ind-month-select").addEventListener("change", e => {
+          const month = e.target.value;
+          const mDates = dates.filter(d => d.startsWith(month));
+          document.getElementById("ind-avg-area").innerHTML = renderSnapshot(computeAverage(currentRecords, mDates));
+        });
+        resultEl.querySelectorAll("#ind-history-body tr").forEach(tr => {
+          tr.addEventListener("click", () => {
+            currentDate = tr.dataset.date;
+            renderStoreView();
+          });
+        });
+      }
+
+      function loadStoreHistory(slug) {
+        resultEl.innerHTML = '<p class="ind-empty">Carregando histórico…</p>';
+        db.ref("indicadores/" + slug).once("value").then(snap => {
+          const data = snap.val();
+          if (!data) {
+            resultEl.innerHTML = '<p class="ind-empty">Nenhum histórico salvo para essa loja ainda.</p>';
+            return;
+          }
+          currentSlug = slug;
+          currentRecords = data;
+          currentDate = null;
+          renderStoreView();
+        });
+      }
+
+      searchInput.addEventListener("input", () => {
+        const val = searchInput.value.trim();
+        const found = (window.__indLojas || []).find(e => e.nome === val);
+        if (found) loadStoreHistory(found.slug);
+      });
+    })();
+
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./service-worker.js").catch(() => {});
