@@ -989,6 +989,91 @@
     font-size: 0.9rem;
     max-width: 460px;
   }
+
+  /* Painel Férias/Folgas */
+  #panel-ferias {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .fe-cards {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .fe-card {
+    flex: 1;
+    min-width: 110px;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .fe-card-num {
+    font-size: 1.7rem;
+    font-weight: 800;
+  }
+  .fe-card.violet .fe-card-num { color: #a78bfa; }
+  .fe-card.blue .fe-card-num { color: #3b82f6; }
+  .fe-card.green .fe-card-num { color: #22c55e; }
+  .fe-card-label {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+  .fe-section-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 700;
+    margin: 18px 0 10px;
+  }
+  .fe-list {
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .fe-item {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 3px solid #64748b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .fe-item.ongoing { border-left-color: #a78bfa; }
+  .fe-item.upcoming { border-left-color: #3b82f6; }
+  .fe-item.today { border-left-color: #22c55e; }
+  .fe-item-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .fe-item-funcao {
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+  .fe-item-right {
+    text-align: right;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    white-space: nowrap;
+  }
+  .fe-item-sub {
+    font-size: 0.68rem;
+    color: #64748b;
+    margin-top: 2px;
+  }
+  .fe-empty {
+    color: #64748b;
+    font-size: 0.85rem;
+    max-width: 460px;
+  }
 </style>
 </head>
 <body>
@@ -1031,6 +1116,9 @@
       </button>
       <button class="tab" data-target="panel-avaliacao">
         <span class="icon">🌟</span> Avaliação
+      </button>
+      <button class="tab" data-target="panel-ferias">
+        <span class="icon">🏖️</span> Férias
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1185,6 +1273,39 @@
       </div>
 
       <div id="av-content"></div>
+    </div>
+
+    <div class="pane" id="panel-ferias">
+      <script id="fe-roster-data" type="application/json">[{"matricula": 7153570, "nome": "Anna Caroline", "funcao": "Op. Loja", "grupo": 1, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 5624576, "nome": "Cláudia Regina", "funcao": "Op. Loja", "grupo": 2, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 6427510, "nome": "Danillo de Souza", "funcao": "Op. Loja", "grupo": 3, "cod": "sex", "folga_semanal": "Sexta"}, {"matricula": 6005225, "nome": "Francicleide dos Santos", "funcao": "Op. Loja", "grupo": 1, "cod": "sex", "folga_semanal": "Sexta"}, {"matricula": 5885264, "nome": "Joselito Dias Sobreira", "funcao": "Op. Loja", "grupo": 2, "cod": "seg", "folga_semanal": "Segunda"}, {"matricula": 5646375, "nome": "Lizandra Araujo", "funcao": "Op. Loja", "grupo": 3, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 6528910, "nome": "Matheus Carlos", "funcao": "Op. Loja", "grupo": 3, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 7026595, "nome": "Maria Eduarda", "funcao": "Op. Loja", "grupo": 1, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 6899153, "nome": "Nataniel Sousa", "funcao": "Op. Loja", "grupo": 2, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 6755461, "nome": "Simone do Carmo", "funcao": "Op. Loja", "grupo": 3, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 7026013, "nome": "Victoria Aquino", "funcao": "Op. Loja", "grupo": 1, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 6465951, "nome": "Alfredo Nascimento", "funcao": "Op. Loja", "grupo": 2, "cod": "seg", "folga_semanal": "Segunda"}, {"matricula": 5361060, "nome": "Gabriel Martins", "funcao": "Op. Loja", "grupo": 3, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 4275195, "nome": "Gleyce Kelly", "funcao": "Op. Loja", "grupo": 1, "cod": "sex", "folga_semanal": "Sexta"}, {"matricula": 5568978, "nome": "Felipe Mota", "funcao": "Pleno", "grupo": 2, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 7231784, "nome": "Andrey da Costa", "funcao": "Op. Loja", "grupo": 1, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 6926177, "nome": "Alohan da Costa", "funcao": "Op. Loja", "grupo": 2, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 7237316, "nome": "Daniele Teixeira", "funcao": "Op. Loja", "grupo": 3, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 7216165, "nome": "Deivison Vieira", "funcao": "Op. Loja", "grupo": 1, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 7237308, "nome": "Fernanda Pereira", "funcao": "Op. Loja", "grupo": 2, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 7029578, "nome": "Jonas Felipe", "funcao": "Op. Loja", "grupo": 3, "cod": "sex", "folga_semanal": "Sexta"}, {"matricula": 7160542, "nome": "Kamili Conceição", "funcao": "Op. Loja", "grupo": 1, "cod": "qui", "folga_semanal": "Quinta"}, {"matricula": 7115261, "nome": "Leonard Gerard", "funcao": "Op. Loja", "grupo": 2, "cod": "ter", "folga_semanal": "Terça"}, {"matricula": 7029322, "nome": "Marcelo da Silva", "funcao": "Op. Loja", "grupo": 3, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 7014252, "nome": "Suelen da Silva", "funcao": "Op. Loja", "grupo": 1, "cod": "sex", "folga_semanal": "Sexta"}, {"matricula": 7122659, "nome": "Talia Mesquita", "funcao": "Op. Loja", "grupo": 2, "cod": "seg", "folga_semanal": "Segunda"}, {"matricula": 7164289, "nome": "Taissa Ferreira", "funcao": "Op. Loja", "grupo": 3, "cod": "seg", "folga_semanal": "Segunda"}, {"matricula": 6259731, "nome": "Guilherme Veras", "funcao": "Op. Loja", "grupo": 1, "cod": "qua", "folga_semanal": "Quarta"}, {"matricula": 6739733, "nome": "Lohan Rodrigues", "funcao": "Op. Loja", "grupo": 2, "cod": "seg", "folga_semanal": "Segunda"}]</script>
+
+      <div class="fe-cards">
+        <div class="fe-card violet">
+          <div class="fe-card-num" id="fe-count-ferias">–</div>
+          <div class="fe-card-label">De férias agora</div>
+        </div>
+        <div class="fe-card blue">
+          <div class="fe-card-num" id="fe-count-proximas">–</div>
+          <div class="fe-card-label">Férias nos próx. 30 dias</div>
+        </div>
+        <div class="fe-card green">
+          <div class="fe-card-num" id="fe-count-hoje">–</div>
+          <div class="fe-card-label">De folga hoje</div>
+        </div>
+      </div>
+
+      <div class="fe-section-title">🟣 Em férias agora</div>
+      <div class="fe-list" id="fe-list-ferias"></div>
+
+      <div class="fe-section-title">🔵 Próximas férias (30 dias)</div>
+      <div class="fe-list" id="fe-list-proximas"></div>
+
+      <div class="fe-section-title">🟢 Folga semanal hoje</div>
+      <div class="fe-list" id="fe-list-hoje"></div>
+
+      <p style="font-size:0.7rem;color:#475569;margin-top:16px;max-width:460px;">
+        Consulta em tempo real — os dados vêm direto do app Escala Digital.
+        Pra marcar/editar férias de alguém, use o botão "+ Férias" lá.
+      </p>
     </div>
   </div>
 
@@ -2152,6 +2273,104 @@
       colaboradorSelect.addEventListener("change", () => {
         loadColaborador(colaboradorSelect.value);
       });
+    })();
+
+    /* ===== Férias / Folgas ===== */
+    (function () {
+      const ROSTER = JSON.parse(document.getElementById("fe-roster-data").textContent);
+      const ANCHOR_DATE = new Date("2026-08-16T00:00:00");
+      const ANCHOR_GROUP = 2;
+      const DOW_ABBR = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+
+      function mod(n, m) { return ((n % m) + m) % m; }
+
+      function groupOnSunday(sundayDate) {
+        const diffDays = Math.round((sundayDate - ANCHOR_DATE) / 86400000);
+        const sundaysSinceAnchor = diffDays / 7;
+        return mod(sundaysSinceAnchor + (ANCHOR_GROUP - 1), 3) + 1;
+      }
+
+      function isFolgaHoje(emp, today) {
+        const dow = today.getDay();
+        if (dow === 0) {
+          return groupOnSunday(today) === emp.grupo;
+        }
+        return DOW_ABBR[dow] === emp.cod;
+      }
+
+      function toISO(d) { return d.toISOString().slice(0, 10); }
+      function fmtBR(iso) { const [y, m, d] = iso.split("-"); return `${d}/${m}/${y}`; }
+      function diasEntre(isoA, isoB) {
+        return Math.round((new Date(isoB + "T00:00:00") - new Date(isoA + "T00:00:00")) / 86400000);
+      }
+
+      function render() {
+        db.ref("state/ferias").once("value").then(snap => {
+          const feriasMap = snap.val() || {};
+          const today = new Date();
+          const todayISO = toISO(today);
+          const in30ISO = toISO(new Date(today.getTime() + 30 * 86400000));
+
+          let employees = ROSTER.slice();
+
+          const emFerias = [];
+          const proximas = [];
+          employees.forEach(emp => {
+            const f = feriasMap[String(emp.matricula)];
+            if (!f) return;
+            if (todayISO >= f.inicio && todayISO <= f.fim) {
+              emFerias.push(Object.assign({}, emp, f));
+            } else if (f.inicio > todayISO && f.inicio <= in30ISO) {
+              proximas.push(Object.assign({}, emp, f));
+            }
+          });
+          proximas.sort((a, b) => a.inicio.localeCompare(b.inicio));
+
+          const folgaHoje = employees.filter(emp => isFolgaHoje(emp, today) && !emFerias.some(f => f.matricula === emp.matricula));
+
+          document.getElementById("fe-count-ferias").textContent = emFerias.length;
+          document.getElementById("fe-count-proximas").textContent = proximas.length;
+          document.getElementById("fe-count-hoje").textContent = folgaHoje.length;
+
+          const listFerias = document.getElementById("fe-list-ferias");
+          listFerias.innerHTML = emFerias.length ? emFerias.map(e => `
+            <div class="fe-item ongoing">
+              <div>
+                <div class="fe-item-name">${e.nome}</div>
+                <div class="fe-item-funcao">${e.funcao}</div>
+              </div>
+              <div class="fe-item-right">
+                ${fmtBR(e.inicio)} – ${fmtBR(e.fim)}
+                <div class="fe-item-sub">volta em ${diasEntre(todayISO, e.fim)} dia(s)</div>
+              </div>
+            </div>`).join("") : '<p class="fe-empty">Ninguém de férias no momento.</p>';
+
+          const listProximas = document.getElementById("fe-list-proximas");
+          listProximas.innerHTML = proximas.length ? proximas.map(e => `
+            <div class="fe-item upcoming">
+              <div>
+                <div class="fe-item-name">${e.nome}</div>
+                <div class="fe-item-funcao">${e.funcao}</div>
+              </div>
+              <div class="fe-item-right">
+                ${fmtBR(e.inicio)} – ${fmtBR(e.fim)}
+                <div class="fe-item-sub">em ${diasEntre(todayISO, e.inicio)} dia(s)</div>
+              </div>
+            </div>`).join("") : '<p class="fe-empty">Nenhuma férias programada nos próximos 30 dias.</p>';
+
+          const listHoje = document.getElementById("fe-list-hoje");
+          listHoje.innerHTML = folgaHoje.length ? folgaHoje.map(e => `
+            <div class="fe-item today">
+              <div>
+                <div class="fe-item-name">${e.nome}</div>
+                <div class="fe-item-funcao">${e.funcao}</div>
+              </div>
+              <div class="fe-item-right">grupo ${e.grupo}</div>
+            </div>`).join("") : '<p class="fe-empty">Ninguém de folga semanal hoje.</p>';
+        });
+      }
+
+      db.ref("state/ferias").on("value", render);
     })();
 
 
