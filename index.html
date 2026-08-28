@@ -566,12 +566,18 @@
   }
 
   /* Indicadores por loja */
+  #panel-sla {
+    --ind-max: 460px;
+  }
+  @media (min-width: 900px) {
+    #panel-sla { --ind-max: 1040px; }
+  }
   .ind-upload {
     background: #1e293b;
     border: 1px dashed #334155;
     border-radius: 10px;
     padding: 16px;
-    max-width: 460px;
+    max-width: var(--ind-max);
     margin-bottom: 16px;
   }
   .ind-upload label {
@@ -632,7 +638,7 @@
   .ind-save-btn:hover { background: #16a34a; }
   .ind-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .ind-search-wrap {
-    max-width: 460px;
+    max-width: var(--ind-max);
     margin-bottom: 18px;
   }
   .ind-search-wrap label {
@@ -651,7 +657,7 @@
     font-size: 0.92rem;
   }
   .ind-card {
-    max-width: 460px;
+    max-width: var(--ind-max);
     background: #1e293b;
     border-radius: 12px;
     padding: 18px;
@@ -699,6 +705,16 @@
   }
 
   /* Categorias */
+  .ind-categories-grid {
+    display: block;
+  }
+  @media (min-width: 900px) {
+    .ind-categories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
+    }
+  }
   .ind-category {
     margin-bottom: 18px;
   }
@@ -788,8 +804,51 @@
   .ind-empty {
     color: #64748b;
     font-size: 0.85rem;
-    max-width: 460px;
+    max-width: var(--ind-max);
   }
+
+  /* Layout desktop: upload+busca ao lado, resultado embaixo em largura total */
+  .ind-top-row {
+    display: block;
+  }
+  @media (min-width: 900px) {
+    .ind-top-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .ind-top-row .ind-upload,
+    .ind-top-row .ind-search-wrap {
+      flex: 1;
+      max-width: none;
+      margin-bottom: 0;
+    }
+  }
+
+  .ind-clear-btn {
+    background: none;
+    border: 1px solid #ef444455;
+    color: #ef4444;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .ind-clear-btn:hover { background: #2a1414; border-color: #ef4444; }
+  .ind-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  .ind-row-del {
+    background: none;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .ind-row-del:hover { color: #ef4444; }
 
   .ind-date-row {
     display: flex;
@@ -819,7 +878,7 @@
     margin: 20px 0 10px;
   }
   .ind-history-table {
-    max-width: 460px;
+    max-width: var(--ind-max);
     width: 100%;
     border-collapse: collapse;
     font-size: 0.78rem;
@@ -1472,18 +1531,20 @@
     </div>
 
     <div class="pane" id="panel-sla">
-      <div class="ind-upload">
-        <label>Carregar arquivo(s) de indicadores (.html) — pode selecionar vários de uma vez. Cada um vira um dia no histórico.</label>
-        <input type="file" id="ind-file-input" accept=".html,.htm" multiple>
-        <div class="ind-pending-list" id="ind-pending-list"></div>
-        <button class="ind-save-btn" id="ind-save-btn" style="display:none;">💾 Salvar no histórico</button>
-        <div class="ind-file-status" id="ind-file-status"></div>
-      </div>
+      <div class="ind-top-row">
+        <div class="ind-upload">
+          <label>Carregar arquivo(s) de indicadores (.html) — pode selecionar vários de uma vez. Cada um vira um dia no histórico.</label>
+          <input type="file" id="ind-file-input" accept=".html,.htm" multiple>
+          <div class="ind-pending-list" id="ind-pending-list"></div>
+          <button class="ind-save-btn" id="ind-save-btn" style="display:none;">💾 Salvar no histórico</button>
+          <div class="ind-file-status" id="ind-file-status"></div>
+        </div>
 
-      <div class="ind-search-wrap">
-        <label>Buscar loja</label>
-        <input type="text" id="ind-search" list="ind-datalist" placeholder="Carregando lojas…" disabled>
-        <datalist id="ind-datalist"></datalist>
+        <div class="ind-search-wrap">
+          <label>Buscar loja</label>
+          <input type="text" id="ind-search" list="ind-datalist" placeholder="Carregando lojas…" disabled>
+          <datalist id="ind-datalist"></datalist>
+        </div>
       </div>
 
       <div id="ind-result">
@@ -2295,7 +2356,7 @@
             <div class="ind-summary-num">${summaryEmoji} ${okCount}/${total}</div>
             <div class="ind-summary-txt">indicadores dentro da meta<br>o traço na barra marca a meta de cada indicador</div>
           </div>
-          ${catsHtml}`;
+          <div class="ind-categories-grid">${catsHtml}</div>`;
       }
 
       function computeAverage(records, dates) {
@@ -2324,6 +2385,9 @@
 
         resultEl.innerHTML = `
           <div class="ind-card">
+            <div class="ind-card-actions">
+              <button class="ind-clear-btn" id="ind-clear-store-btn">🗑️ Limpar todos os dados desta loja</button>
+            </div>
             <div class="ind-card-header">
               <div class="ind-store-name">${record.nome}</div>
               <div class="ind-store-meta">Gerente Regional: ${record.gerShort} · ${dates.length} dia(s) no histórico</div>
@@ -2350,7 +2414,7 @@
 
             <div class="ind-section-label">🕒 Histórico completo</div>
             <table class="ind-history-table">
-              <thead><tr><th>Data</th><th>Meta</th><th>Cancel.</th><th>Ruptura</th></tr></thead>
+              <thead><tr><th>Data</th><th>Meta</th><th>Cancel.</th><th>Ruptura</th><th></th></tr></thead>
               <tbody id="ind-history-body">
                 ${dates.map(d => {
                   const r = currentRecords[d];
@@ -2366,6 +2430,7 @@
                     <td>${ok}/${tot}</td>
                     <td>${(r.cancelOn ?? 0).toFixed(1)}%</td>
                     <td>${(r.rupturaOn ?? 0).toFixed(1)}%</td>
+                    <td><button class="ind-row-del" data-del-date="${d}" title="Excluir este dia">🗑️</button></td>
                   </tr>`;
                 }).join("")}
               </tbody>
@@ -2382,9 +2447,34 @@
           document.getElementById("ind-avg-area").innerHTML = renderSnapshot(computeAverage(currentRecords, mDates));
         });
         resultEl.querySelectorAll("#ind-history-body tr").forEach(tr => {
-          tr.addEventListener("click", () => {
+          tr.addEventListener("click", (e) => {
+            if (e.target.closest(".ind-row-del")) return;
             currentDate = tr.dataset.date;
             renderStoreView();
+          });
+        });
+        resultEl.querySelectorAll(".ind-row-del").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const d = btn.dataset.delDate;
+            if (!confirm(`Excluir os dados de ${fmtDateBR(d)} para ${record.nome}?`)) return;
+            db.ref("indicadores/" + currentSlug + "/" + d).remove().then(() => {
+              delete currentRecords[d];
+              const remaining = Object.keys(currentRecords);
+              if (!remaining.length) {
+                resultEl.innerHTML = '<p class="ind-empty">Nenhum histórico salvo para essa loja ainda.</p>';
+                return;
+              }
+              currentDate = null;
+              renderStoreView();
+            });
+          });
+        });
+        document.getElementById("ind-clear-store-btn").addEventListener("click", () => {
+          if (!confirm(`Tem certeza que quer apagar TODO o histórico de "${record.nome}" (${dates.length} dia(s))? Essa ação não pode ser desfeita.`)) return;
+          db.ref("indicadores/" + currentSlug).remove().then(() => {
+            resultEl.innerHTML = '<p class="ind-empty">Histórico apagado. Carregue novos arquivos ou selecione outra loja.</p>';
+            searchInput.value = "";
           });
         });
       }
