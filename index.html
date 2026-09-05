@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital KPIs</title>
 <link rel="manifest" href="./manifest.json">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <meta name="theme-color" content="#0f172a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1361,6 +1362,129 @@
   }
   .cmp-rank-item b { color: #f1f5f9; }
   .cmp-empty { color: #64748b; font-size: 0.9rem; max-width: 480px; }
+
+  /* Painel Monitor de Operação (escopado — nenhum seletor vaza pro resto do app) */
+  #panel-monitor {
+    --mo-bg-panel: #161D2C;
+    --mo-bg-panel-raised: #1C2436;
+    --mo-line: #2A3346;
+    --mo-text: #E7ECF5;
+    --mo-text-dim: #8B96AC;
+    --mo-cyan: #3FD0C9;
+    --mo-amber: #F0A83C;
+    --mo-red: #E8626B;
+    --mo-green: #5FCB8B;
+    overflow-y: auto;
+    background: #0E1420;
+    color: var(--mo-text);
+    padding: 16px;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  #panel-monitor .mo-wrap { max-width: 980px; margin: 0 auto; }
+
+  #panel-monitor .mo-top {
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--mo-line); padding-bottom: 16px; margin-bottom: 18px;
+  }
+  #panel-monitor .mo-top h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; color: var(--mo-text); }
+  #panel-monitor .mo-sub { color: var(--mo-text-dim); font-size: 13px; margin: 0; }
+  #panel-monitor .mo-clock { font-family: 'IBM Plex Mono', monospace; color: var(--mo-cyan); font-size: 13px; }
+
+  #panel-monitor .mo-day-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+  }
+  #panel-monitor .mo-day-row label { font-size: 0.75rem; color: var(--mo-text-dim); }
+  #panel-monitor .mo-day-row input[type="date"] {
+    background: var(--mo-bg-panel-raised); border: 1px solid var(--mo-line); color: var(--mo-text);
+    padding: 7px 10px; border-radius: 6px; font-size: 0.85rem;
+  }
+  #panel-monitor .mo-status-sync { font-size: 0.72rem; color: var(--mo-text-dim); }
+
+  #panel-monitor .mo-upload-panel {
+    background: var(--mo-bg-panel); border: 1px solid var(--mo-line); border-radius: 12px;
+    padding: 18px; margin-bottom: 20px;
+  }
+  #panel-monitor .mo-upload-panel h2 { font-size: 15px; margin: 0 0 4px; color: var(--mo-text); }
+  #panel-monitor .mo-upload-panel .mo-hint { color: var(--mo-text-dim); font-size: 13px; margin: 0 0 14px; }
+
+  #panel-monitor .mo-upload-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  #panel-monitor input[type="file"] { display: none; }
+  #panel-monitor .mo-upload-btn {
+    background: var(--mo-cyan); color: #06201E; border: none; font-weight: 600; font-size: 13.5px;
+    padding: 10px 16px; border-radius: 8px; cursor: pointer; display: inline-block;
+  }
+  #panel-monitor .mo-upload-btn:hover { filter: brightness(1.08); }
+  #panel-monitor .mo-ghost-btn {
+    background: transparent; border: 1px solid var(--mo-line); color: var(--mo-text-dim);
+    font-size: 13px; padding: 9px 14px; border-radius: 8px; cursor: pointer;
+  }
+  #panel-monitor .mo-ghost-btn:hover { border-color: var(--mo-cyan); color: var(--mo-text); }
+  #panel-monitor .mo-status-line { font-size: 12.5px; color: var(--mo-text-dim); }
+  #panel-monitor .mo-status-line.mo-err { color: var(--mo-red); }
+  #panel-monitor .mo-status-line.mo-ok { color: var(--mo-green); }
+
+  #panel-monitor .mo-ocr-body { display: none; grid-template-columns: 200px 1fr; gap: 18px; margin-top: 6px; }
+  #panel-monitor .mo-ocr-body.mo-show { display: grid; }
+  @media (max-width: 640px) {
+    #panel-monitor .mo-ocr-body.mo-show { grid-template-columns: 1fr; }
+  }
+  #panel-monitor .mo-preview-box img { width: 100%; border-radius: 8px; border: 1px solid var(--mo-line); display: block; }
+
+  #panel-monitor .mo-field-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px 12px; }
+  #panel-monitor .mo-field { display: flex; flex-direction: column; gap: 4px; }
+  #panel-monitor .mo-field label { font-size: 11px; color: var(--mo-text-dim); }
+  #panel-monitor .mo-field input {
+    background: var(--mo-bg-panel-raised); border: 1px solid var(--mo-line); border-radius: 6px;
+    color: var(--mo-text); font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; padding: 7px 9px;
+  }
+  #panel-monitor .mo-field input:focus { outline: none; border-color: var(--mo-cyan); }
+  #panel-monitor .mo-add-btn {
+    margin-top: 12px; background: var(--mo-green); color: #08281A; border: none;
+    font-weight: 600; font-size: 13.5px; padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  }
+  #panel-monitor .mo-add-btn:hover { filter: brightness(1.08); }
+  #panel-monitor .mo-add-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  #panel-monitor .mo-hero {
+    background: linear-gradient(135deg, var(--mo-bg-panel-raised), var(--mo-bg-panel)); border: 1px solid var(--mo-line);
+    border-radius: 14px; padding: 22px 22px 20px; margin-bottom: 20px;
+  }
+  #panel-monitor .mo-hero-label { color: var(--mo-text-dim); font-size: 12.5px; margin-bottom: 8px; }
+  #panel-monitor .mo-hero-number {
+    font-family: 'IBM Plex Mono', monospace; font-size: 44px; font-weight: 600; line-height: 1; letter-spacing: -0.02em;
+  }
+  #panel-monitor .mo-hero-number span { font-size: 20px; color: var(--mo-text-dim); margin-left: 6px; }
+  #panel-monitor .mo-hero-desc { margin-top: 10px; color: var(--mo-text-dim); font-size: 13.5px; max-width: 560px; }
+
+  #panel-monitor .mo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+  @media (max-width: 720px) {
+    #panel-monitor .mo-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  #panel-monitor .mo-card { background: var(--mo-bg-panel); border: 1px solid var(--mo-line); border-radius: 12px; padding: 14px 16px; }
+  #panel-monitor .mo-card-label { font-size: 12px; color: var(--mo-text-dim); margin-bottom: 6px; }
+  #panel-monitor .mo-card-value { font-family: 'IBM Plex Mono', monospace; font-size: 21px; font-weight: 600; color: var(--mo-text); }
+  #panel-monitor .mo-card-value.mo-warn { color: var(--mo-amber); }
+  #panel-monitor .mo-card-value.mo-bad { color: var(--mo-red); }
+  #panel-monitor .mo-card-value.mo-good { color: var(--mo-green); }
+
+  #panel-monitor section h2 { font-size: 15px; font-weight: 600; margin: 0 0 12px; color: var(--mo-text); }
+  #panel-monitor .mo-timeline-wrap {
+    background: var(--mo-bg-panel); border: 1px solid var(--mo-line); border-radius: 12px;
+    padding: 18px; margin-bottom: 20px; overflow-x: auto;
+  }
+  #panel-monitor table { border-collapse: collapse; width: 100%; min-width: 620px; }
+  #panel-monitor th, #panel-monitor td { text-align: left; padding: 8px 9px; font-size: 12.5px; border-bottom: 1px solid var(--mo-line); white-space: nowrap; color: var(--mo-text); }
+  #panel-monitor th { color: var(--mo-text-dim); font-weight: 500; font-size: 11.5px; }
+  #panel-monitor td.mo-num { font-family: 'IBM Plex Mono', monospace; }
+  #panel-monitor tr:last-child td { border-bottom: none; }
+  #panel-monitor .mo-empty { color: var(--mo-text-dim); font-size: 13.5px; text-align: center; padding: 26px 10px; }
+  #panel-monitor canvas { width: 100%; height: 170px; display: block; }
+
+  #panel-monitor .mo-report-box { background: var(--mo-bg-panel); border: 1px solid var(--mo-line); border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; }
+  #panel-monitor .mo-report-text { font-size: 14px; line-height: 1.6; color: var(--mo-text); white-space: pre-wrap; }
+  #panel-monitor .mo-report-placeholder { color: var(--mo-text-dim); font-size: 13.5px; }
+
+  #panel-monitor .mo-footer { text-align: center; color: var(--mo-text-dim); font-size: 11.5px; margin-top: 16px; }
 </style>
 </head>
 <body>
@@ -1415,6 +1539,9 @@
       </button>
       <button class="tab" data-target="panel-comparativo">
         <span class="icon">⚖️</span> Comparativo
+      </button>
+      <button class="tab" data-target="panel-monitor">
+        <span class="icon">🖥️</span> Monitor
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1649,6 +1776,76 @@
 
       <div id="cmp-output">
         <p class="cmp-empty">Adicione 2 ou mais lojas pra comparar os indicadores lado a lado.</p>
+      </div>
+    </div>
+
+    <div class="pane" id="panel-monitor">
+      <div class="mo-wrap">
+
+        <div class="mo-top">
+          <div>
+            <h1>Monitor de Operação</h1>
+            <p class="mo-sub">Evolução dos indicadores do painel "Saúde da Operação" ao longo do dia</p>
+          </div>
+          <div class="mo-clock" id="mo-clock"></div>
+        </div>
+
+        <div class="mo-day-row">
+          <label>Dia:</label>
+          <input type="date" id="mo-date">
+          <span class="mo-status-sync" id="mo-sync-status">🟡 Conectando…</span>
+        </div>
+
+        <div class="mo-upload-panel">
+          <h2>Adicionar novo print</h2>
+          <p class="mo-hint">Carregue a imagem do painel. O sistema tenta ler os números automaticamente; confira e ajuste antes de adicionar.</p>
+          <div class="mo-upload-row">
+            <label class="mo-upload-btn" for="mo-fileInput" id="mo-uploadLabel">Carregar print</label>
+            <input type="file" id="mo-fileInput" accept="image/*">
+            <button class="mo-ghost-btn" id="mo-clearBtn">Limpar linha do tempo do dia</button>
+            <span class="mo-status-line" id="mo-statusLine"></span>
+          </div>
+
+          <div class="mo-ocr-body" id="mo-ocrBody">
+            <div class="mo-preview-box"><img id="mo-previewImg" alt="Preview do print"></div>
+            <div>
+              <div class="mo-field-grid">
+                <div class="mo-field"><label>Horário (HH:MM)</label><input id="mo-f_horario" placeholder="14:32"></div>
+                <div class="mo-field"><label>Pedidos totais</label><input id="mo-f_totais" inputmode="numeric"></div>
+                <div class="mo-field"><label>Pedidos concluídos</label><input id="mo-f_concluidos" inputmode="numeric"></div>
+                <div class="mo-field"><label>Pedidos cancelados</label><input id="mo-f_cancelados" inputmode="numeric"></div>
+                <div class="mo-field"><label>Taxa de cancelamento (%)</label><input id="mo-f_taxa" inputmode="numeric"></div>
+                <div class="mo-field"><label>Separação no prazo (%)</label><input id="mo-f_separacao" inputmode="numeric"></div>
+                <div class="mo-field"><label>Entregas no prazo (%)</label><input id="mo-f_entregas" inputmode="numeric"></div>
+                <div class="mo-field"><label>Espera do entregador (min)</label><input id="mo-f_espera" inputmode="numeric"></div>
+              </div>
+              <button class="mo-add-btn" id="mo-addBtn">Adicionar à linha do tempo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mo-hero" id="mo-hero">
+          <div class="mo-hero-label">Última leitura registrada</div>
+          <div class="mo-hero-number" id="mo-heroNumber">--<span>entregas no prazo</span></div>
+          <div class="mo-hero-desc" id="mo-heroDesc"></div>
+        </div>
+
+        <div class="mo-grid" id="mo-latestGrid"></div>
+
+        <section>
+          <h2>Linha do tempo</h2>
+          <div class="mo-timeline-wrap">
+            <canvas id="mo-chart"></canvas>
+            <div id="mo-tableWrap"></div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Relatório do dia</h2>
+          <div class="mo-report-box"><div id="mo-reportArea" class="mo-report-placeholder"></div></div>
+        </section>
+
+        <p class="mo-footer">Dados salvos no Firebase (compartilhado com o restante do PAINEL) — histórico organizado por dia.</p>
       </div>
     </div>
   </div>
@@ -3038,6 +3235,365 @@
                 <b>${s.ok}/${s.total}</b>
               </div>`).join("")}
           </div>`;
+      }
+    })();
+
+    /* ===== Monitor de Operação (histórico por dia via Firebase) ===== */
+    (function () {
+      const dateInput = document.getElementById("mo-date");
+      const syncStatus = document.getElementById("mo-sync-status");
+      const fileInput = document.getElementById("mo-fileInput");
+      const uploadLabel = document.getElementById("mo-uploadLabel");
+      const statusLine = document.getElementById("mo-statusLine");
+      const ocrBody = document.getElementById("mo-ocrBody");
+      const previewImg = document.getElementById("mo-previewImg");
+      const addBtn = document.getElementById("mo-addBtn");
+      const clearBtn = document.getElementById("mo-clearBtn");
+
+      let ENTRIES = [];
+      let currentRef = null;
+      let suppressUntil = 0;
+
+      db.ref(".info/connected").on("value", snap => {
+        syncStatus.textContent = snap.val() ? "🟢 Sincronizado" : "🔴 Sem conexão";
+      });
+
+      function todayISO() {
+        const d = new Date();
+        const tz = d.getTimezoneOffset() * 60000;
+        return new Date(d - tz).toISOString().slice(0, 10);
+      }
+
+      function setStatus(msg, kind) {
+        statusLine.textContent = msg || "";
+        statusLine.className = "mo-status-line" + (kind ? " mo-" + kind : "");
+      }
+
+      function tickClock() {
+        document.getElementById("mo-clock").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      }
+      tickClock();
+      setInterval(tickClock, 1000);
+
+      function watchDay(date) {
+        if (currentRef) currentRef.off();
+        currentRef = db.ref("monitor_operacao/" + date);
+        currentRef.on("value", snap => {
+          if (Date.now() < suppressUntil) return;
+          const data = snap.val();
+          ENTRIES = (data && data.entries) ? data.entries : [];
+          render();
+        });
+      }
+
+      function saveEntries() {
+        suppressUntil = Date.now() + 1200;
+        currentRef.set({ entries: ENTRIES });
+      }
+
+      dateInput.value = todayISO();
+      watchDay(dateInput.value);
+      dateInput.addEventListener("change", () => watchDay(dateInput.value));
+
+      // ---------- Upload + OCR best-effort ----------
+
+      let tesseractLoadPromise = null;
+      function ensureTesseract() {
+        if (window.Tesseract) return Promise.resolve(true);
+        if (tesseractLoadPromise) return tesseractLoadPromise;
+        tesseractLoadPromise = new Promise((resolve) => {
+          const s = document.createElement("script");
+          s.src = "https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/6.0.0/tesseract.min.js";
+          s.onload = () => resolve(!!window.Tesseract);
+          s.onerror = () => resolve(false);
+          document.head.appendChild(s);
+        });
+        return tesseractLoadPromise;
+      }
+
+      function withTimeout(promise, ms) {
+        return Promise.race([
+          promise,
+          new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))
+        ]);
+      }
+
+      function extractFields(rawText) {
+        const text = rawText.replace(/\s+/g, " ");
+        const result = {};
+
+        const pctMatches = [...text.matchAll(/(\d{1,3})\s*%/g)].map(m => parseInt(m[1], 10));
+        if (pctMatches[0] !== undefined) result.taxa_cancelamento = pctMatches[0];
+        if (pctMatches[1] !== undefined) result.separacao_prazo = pctMatches[1];
+        if (pctMatches[2] !== undefined) result.entregas_prazo = pctMatches[2];
+
+        const minMatch = text.match(/(\d{1,3})\s*min/i);
+        if (minMatch) result.espera_entregador_min = parseInt(minMatch[1], 10);
+
+        const timeMatches = [...text.matchAll(/(\d{1,2}):(\d{2})/g)];
+        if (timeMatches.length) result.horario = timeMatches[timeMatches.length - 1][0];
+
+        let stripped = text
+          .replace(/(\d{1,3})\s*%/g, " ")
+          .replace(/(\d{1,3})\s*min/gi, " ")
+          .replace(/(\d{1,2}):(\d{2})/g, " ");
+        const plainNums = [...stripped.matchAll(/\b(\d{1,4})\b/g)].map(m => parseInt(m[1], 10));
+        if (plainNums[0] !== undefined) result.pedidos_totais = plainNums[0];
+        if (plainNums[1] !== undefined) result.pedidos_concluidos = plainNums[1];
+        if (plainNums[2] !== undefined) result.pedidos_cancelados = plainNums[2];
+
+        return result;
+      }
+
+      function fillForm(fields) {
+        if (fields.horario) document.getElementById("mo-f_horario").value = fields.horario;
+        if (fields.pedidos_totais !== undefined) document.getElementById("mo-f_totais").value = fields.pedidos_totais;
+        if (fields.pedidos_concluidos !== undefined) document.getElementById("mo-f_concluidos").value = fields.pedidos_concluidos;
+        if (fields.pedidos_cancelados !== undefined) document.getElementById("mo-f_cancelados").value = fields.pedidos_cancelados;
+        if (fields.taxa_cancelamento !== undefined) document.getElementById("mo-f_taxa").value = fields.taxa_cancelamento;
+        if (fields.separacao_prazo !== undefined) document.getElementById("mo-f_separacao").value = fields.separacao_prazo;
+        if (fields.entregas_prazo !== undefined) document.getElementById("mo-f_entregas").value = fields.entregas_prazo;
+        if (fields.espera_entregador_min !== undefined) document.getElementById("mo-f_espera").value = fields.espera_entregador_min;
+      }
+
+      function clearForm() {
+        ["mo-f_horario", "mo-f_totais", "mo-f_concluidos", "mo-f_cancelados", "mo-f_taxa", "mo-f_separacao", "mo-f_entregas", "mo-f_espera"].forEach(id => {
+          document.getElementById(id).value = "";
+        });
+      }
+
+      fileInput.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        clearForm();
+        const objUrl = URL.createObjectURL(file);
+        previewImg.src = objUrl;
+        ocrBody.classList.add("mo-show");
+
+        setStatus("Tentando ler os números automaticamente...", "");
+        uploadLabel.textContent = "Carregar print";
+
+        try {
+          const ok = await withTimeout(ensureTesseract(), 8000);
+          if (!ok || !window.Tesseract) throw new Error("lib indisponível");
+
+          const res = await withTimeout(window.Tesseract.recognize(file, "por+eng"), 25000);
+          const text = (res && res.data && res.data.text) ? res.data.text : "";
+          const fields = extractFields(text);
+          if (Object.keys(fields).length) {
+            fillForm(fields);
+            setStatus("Leitura automática concluída — confira os campos antes de adicionar.", "ok");
+          } else {
+            setStatus("Não consegui identificar os números automaticamente. Preencha os campos manualmente olhando a imagem ao lado.", "err");
+          }
+        } catch (err) {
+          setStatus("Leitura automática indisponível agora. Preencha os campos manualmente olhando a imagem ao lado.", "err");
+        }
+      });
+
+      addBtn.addEventListener("click", () => {
+        const val = (id) => {
+          const v = document.getElementById(id).value.trim();
+          return v === "" ? null : v;
+        };
+        const numVal = (id) => {
+          const v = val(id);
+          return v === null ? null : Number(v);
+        };
+
+        const entry = {
+          horario: val("mo-f_horario"),
+          pedidos_totais: numVal("mo-f_totais"),
+          pedidos_concluidos: numVal("mo-f_concluidos"),
+          pedidos_cancelados: numVal("mo-f_cancelados"),
+          taxa_cancelamento: numVal("mo-f_taxa"),
+          separacao_prazo: numVal("mo-f_separacao"),
+          entregas_prazo: numVal("mo-f_entregas"),
+          espera_entregador_min: numVal("mo-f_espera")
+        };
+
+        if (entry.horario === null && entry.pedidos_totais === null && entry.entregas_prazo === null) {
+          setStatus("Preencha ao menos o horário e alguns indicadores antes de adicionar.", "err");
+          return;
+        }
+
+        ENTRIES.push(entry);
+        ENTRIES.sort((a, b) => (a.horario || "").localeCompare(b.horario || ""));
+        saveEntries();
+        render();
+        clearForm();
+        ocrBody.classList.remove("mo-show");
+        fileInput.value = "";
+        setStatus("Ponto adicionado à linha do tempo.", "ok");
+      });
+
+      clearBtn.addEventListener("click", () => {
+        if (!ENTRIES.length) return;
+        if (!confirm("Isso vai apagar todos os pontos salvos do dia " + dateInput.value + ". Continuar?")) return;
+        ENTRIES = [];
+        saveEntries();
+        render();
+        setStatus("Linha do tempo do dia limpa.", "ok");
+      });
+
+      // ---------- Render ----------
+
+      function fmtPct(v) { return (v === null || v === undefined || isNaN(v)) ? "—" : v + "%"; }
+      function fmtNum(v) { return (v === null || v === undefined || isNaN(v)) ? "—" : v; }
+      function fmtMin(v) { return (v === null || v === undefined || isNaN(v)) ? "—" : v + "min"; }
+      function classifyEntregas(v) { if (v == null) return ""; if (v >= 90) return "mo-good"; if (v >= 75) return "mo-warn"; return "mo-bad"; }
+      function classifyCancel(v) { if (v == null) return ""; if (v <= 3) return "mo-good"; if (v <= 8) return "mo-warn"; return "mo-bad"; }
+
+      function generateReport(entries) {
+        if (entries.length < 2) return null;
+        const first = entries[0], last = entries[entries.length - 1];
+        const parts = [];
+
+        if (first.pedidos_totais != null && last.pedidos_totais != null) {
+          parts.push(`O volume de pedidos foi de ${first.pedidos_totais} às ${first.horario || "—"} para ${last.pedidos_totais} às ${last.horario || "—"}.`);
+        }
+        if (first.entregas_prazo != null && last.entregas_prazo != null) {
+          const d = last.entregas_prazo - first.entregas_prazo;
+          parts.push(d >= 0
+            ? `As entregas no prazo melhoraram, saindo de ${first.entregas_prazo}% para ${last.entregas_prazo}%.`
+            : `As entregas no prazo pioraram, caindo de ${first.entregas_prazo}% para ${last.entregas_prazo}%.`);
+        }
+        if (first.taxa_cancelamento != null && last.taxa_cancelamento != null) {
+          const d = last.taxa_cancelamento - first.taxa_cancelamento;
+          parts.push(d > 0
+            ? `A taxa de cancelamento subiu de ${first.taxa_cancelamento}% para ${last.taxa_cancelamento}%, ponto de atenção.`
+            : (d < 0 ? `A taxa de cancelamento caiu de ${first.taxa_cancelamento}% para ${last.taxa_cancelamento}%.` : `A taxa de cancelamento se manteve em ${last.taxa_cancelamento}%.`));
+        }
+        if (first.espera_entregador_min != null && last.espera_entregador_min != null) {
+          const d = last.espera_entregador_min - first.espera_entregador_min;
+          parts.push(d <= 0
+            ? `O tempo de espera do entregador melhorou, de ${first.espera_entregador_min} para ${last.espera_entregador_min} minutos.`
+            : `O tempo de espera do entregador piorou, de ${first.espera_entregador_min} para ${last.espera_entregador_min} minutos.`);
+        }
+        if (last.separacao_prazo != null && last.separacao_prazo < 100) {
+          parts.push(`A separação no prazo está em ${last.separacao_prazo}%, abaixo do ideal.`);
+        }
+
+        const attn = [];
+        if (last.taxa_cancelamento != null && last.taxa_cancelamento > 8) attn.push("cancelamento acima de 8%");
+        if (last.entregas_prazo != null && last.entregas_prazo < 75) attn.push("entregas no prazo abaixo de 75%");
+        if (last.espera_entregador_min != null && last.espera_entregador_min > 10) attn.push("espera do entregador acima de 10min");
+
+        let closing = attn.length
+          ? `No estado atual, os pontos de atenção são: ${attn.join(", ")}.`
+          : `No estado atual, os indicadores estão dentro de uma faixa saudável.`;
+        parts.push(closing);
+
+        return parts.join(" ");
+      }
+
+      function render() {
+        const heroNumber = document.getElementById("mo-heroNumber");
+        const heroDesc = document.getElementById("mo-heroDesc");
+        const latestGrid = document.getElementById("mo-latestGrid");
+        const tableWrap = document.getElementById("mo-tableWrap");
+        const reportArea = document.getElementById("mo-reportArea");
+
+        if (!ENTRIES.length) {
+          heroNumber.innerHTML = "--<span>entregas no prazo</span>";
+          heroDesc.textContent = "";
+          latestGrid.innerHTML = "";
+          tableWrap.innerHTML = '<div class="mo-empty">Nenhum print carregado ainda para este dia.</div>';
+          reportArea.textContent = "Adicione ao menos dois pontos para ver o relatório do dia.";
+          reportArea.className = "mo-report-placeholder";
+          drawChart([]);
+          return;
+        }
+
+        const last = ENTRIES[ENTRIES.length - 1];
+        const first = ENTRIES[0];
+        heroNumber.innerHTML = fmtPct(last.entregas_prazo) + "<span>entregas no prazo</span>";
+        let trendMsg = "";
+        if (ENTRIES.length > 1 && first.entregas_prazo != null && last.entregas_prazo != null) {
+          const diff = last.entregas_prazo - first.entregas_prazo;
+          trendMsg = diff === 0 ? "Estável em relação ao primeiro registro do dia."
+            : (diff > 0 ? `Alta de ${diff.toFixed(0)} pontos` : `Queda de ${Math.abs(diff).toFixed(0)} pontos`) + " em relação ao primeiro registro do dia.";
+        }
+        heroDesc.textContent = `Registrado às ${last.horario || "—"}. ${trendMsg}`;
+
+        latestGrid.innerHTML =
+          `<div class="mo-card"><div class="mo-card-label">Pedidos totais</div><div class="mo-card-value">${fmtNum(last.pedidos_totais)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Concluídos</div><div class="mo-card-value mo-good">${fmtNum(last.pedidos_concluidos)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Cancelados</div><div class="mo-card-value ${classifyCancel(last.taxa_cancelamento) === "mo-bad" ? "mo-bad" : ""}">${fmtNum(last.pedidos_cancelados)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Taxa de cancelamento</div><div class="mo-card-value ${classifyCancel(last.taxa_cancelamento)}">${fmtPct(last.taxa_cancelamento)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Separação no prazo</div><div class="mo-card-value">${fmtPct(last.separacao_prazo)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Entregas no prazo</div><div class="mo-card-value ${classifyEntregas(last.entregas_prazo)}">${fmtPct(last.entregas_prazo)}</div></div>` +
+          `<div class="mo-card"><div class="mo-card-label">Espera do entregador</div><div class="mo-card-value">${fmtMin(last.espera_entregador_min)}</div></div>`;
+
+        const rows = ENTRIES.map(e => `<tr>
+            <td>${e.horario || "—"}</td>
+            <td class="mo-num">${fmtNum(e.pedidos_totais)}</td>
+            <td class="mo-num">${fmtNum(e.pedidos_concluidos)}</td>
+            <td class="mo-num">${fmtNum(e.pedidos_cancelados)}</td>
+            <td class="mo-num">${fmtPct(e.taxa_cancelamento)}</td>
+            <td class="mo-num">${fmtPct(e.separacao_prazo)}</td>
+            <td class="mo-num">${fmtPct(e.entregas_prazo)}</td>
+            <td class="mo-num">${fmtMin(e.espera_entregador_min)}</td>
+          </tr>`).join("");
+
+        tableWrap.innerHTML = `<table><thead><tr>
+            <th>Horário</th><th>Total</th><th>Concluídos</th><th>Cancelados</th>
+            <th>Cancel. %</th><th>Separação %</th><th>Entrega no prazo %</th><th>Espera</th>
+          </tr></thead><tbody>${rows}</tbody></table>`;
+
+        const report = generateReport(ENTRIES);
+        if (report) {
+          reportArea.textContent = report;
+          reportArea.className = "mo-report-text";
+        } else {
+          reportArea.textContent = "Adicione mais um print para começar a ver a evolução e receber um relatório automático.";
+          reportArea.className = "mo-report-placeholder";
+        }
+
+        drawChart(ENTRIES);
+      }
+
+      function drawChart(data) {
+        const canvas = document.getElementById("mo-chart");
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        const w = rect.width || 600, h = 170;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        const ctx = canvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, w, h);
+        if (!data.length) return;
+
+        const padL = 36, padR = 12, padT = 14, padB = 22;
+        const plotW = w - padL - padR, plotH = h - padT - padB;
+
+        ctx.strokeStyle = "#2A3346"; ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+          const y = padT + (plotH / 4) * i;
+          ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+        }
+        ctx.fillStyle = "#8B96AC"; ctx.font = "11px IBM Plex Mono, monospace";
+        [100, 75, 50, 25, 0].forEach((v, i) => ctx.fillText(v + "", 4, padT + (plotH / 4) * i + 4));
+
+        function plotSeries(key, color) {
+          const pts = data.map((e, i) => ({
+            x: data.length === 1 ? padL + plotW / 2 : padL + (plotW / (data.length - 1)) * i,
+            y: (e[key] == null) ? null : padT + plotH - (e[key] / 100) * plotH
+          }));
+          ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+          let started = false;
+          pts.forEach(p => { if (p.y === null) return; if (!started) { ctx.moveTo(p.x, p.y); started = true; } else ctx.lineTo(p.x, p.y); });
+          ctx.stroke();
+          ctx.fillStyle = color;
+          pts.forEach(p => { if (p.y === null) return; ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill(); });
+        }
+        plotSeries("entregas_prazo", "#3FD0C9");
+        plotSeries("taxa_cancelamento", "#E8626B");
+
+        ctx.font = "12px IBM Plex Sans, sans-serif";
+        ctx.fillStyle = "#3FD0C9"; ctx.fillText("● Entregas no prazo", w - 200, 14);
+        ctx.fillStyle = "#E8626B"; ctx.fillText("● Cancelamento", w - 85, 14);
       }
     })();
 
