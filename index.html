@@ -1485,6 +1485,85 @@
   #panel-monitor .mo-report-placeholder { color: var(--mo-text-dim); font-size: 13.5px; }
 
   #panel-monitor .mo-footer { text-align: center; color: var(--mo-text-dim); font-size: 11.5px; margin-top: 16px; }
+
+  /* Painel Ajuda & Status */
+  #panel-ajuda {
+    overflow-y: auto;
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 16px;
+  }
+  .aj-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    margin: 22px 0 12px;
+  }
+  .aj-section-title:first-child { margin-top: 0; }
+  .aj-status-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .aj-status-toolbar button {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .aj-status-toolbar button:hover { background: #2563eb; }
+  .aj-status-resumo { font-size: 0.75rem; color: #64748b; }
+  .aj-status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 1100px;
+  }
+  .aj-status-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .aj-status-icon { font-size: 1.4rem; margin-bottom: 4px; }
+  .aj-status-nome { font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; }
+  .aj-status-dot { font-size: 0.72rem; color: #94a3b8; }
+  .aj-status-dot.online { color: #22c55e; }
+  .aj-status-dot.offline { color: #ef4444; }
+  .aj-status-dot.checando { color: #f59e0b; }
+  .aj-guide-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 720px;
+  }
+  .aj-guide-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .aj-guide-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .aj-guide-desc { font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 8px; }
+  .aj-guide-update {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    background: #0f172a;
+    border-left: 3px solid #3b82f6;
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+  }
+  .aj-guide-update b { color: #e2e8f0; }
 </style>
 </head>
 <body>
@@ -1542,6 +1621,9 @@
       </button>
       <button class="tab" data-target="panel-monitor">
         <span class="icon">🖥️</span> Monitor
+      </button>
+      <button class="tab" data-target="panel-ajuda">
+        <span class="icon">❓</span> Ajuda
       </button>
       <span class="indicator" id="indicator"></span>
     </nav>
@@ -1848,6 +1930,18 @@
         <p class="mo-footer">Dados salvos no Firebase (compartilhado com o restante do PAINEL) — histórico organizado por dia.</p>
       </div>
     </div>
+
+    <div class="pane" id="panel-ajuda">
+      <div class="aj-section-title">🔌 Status do sistema</div>
+      <div class="aj-status-toolbar">
+        <button onclick="verificarStatusTudo()">🔄 Verificar agora</button>
+        <span class="aj-status-resumo" id="aj-status-resumo">Verificando…</span>
+      </div>
+      <div class="aj-status-grid" id="aj-status-grid"></div>
+
+      <div class="aj-section-title">📖 Como usar cada aba</div>
+      <div class="aj-guide-list" id="aj-guide-list"></div>
+    </div>
   </div>
 
   <script>
@@ -1890,6 +1984,10 @@
         const target = document.getElementById(tab.dataset.target);
         target.classList.add("active");
         loadFrame(target);
+
+        if (tab.dataset.target === "panel-ajuda") {
+          verificarStatusTudo();
+        }
       });
     });
 
@@ -3595,6 +3693,135 @@
         ctx.fillStyle = "#3FD0C9"; ctx.fillText("● Entregas no prazo", w - 200, 14);
         ctx.fillStyle = "#E8626B"; ctx.fillText("● Cancelamento", w - 85, 14);
       }
+    })();
+
+    /* ===== Ajuda & Status ===== */
+    (function () {
+      const AJUDA_TABS = [
+        { id: "frame-helppis", icon: "📁", nome: "Helppis", tipo: "iframe",
+          url: "https://digital-kpis.github.io/Controle-Helppi-/",
+          desc: "Controla o uso dos equipamentos Helppi (01 a 85): quem está usando qual, horário de almoço, vagas de estacionamento, produtividade por operador e acesso ao app do iFood. Também tem a opção de marcar presença de operador sem uso de Helppi.",
+          atualizar: "Preencha o formulário \"Registrar uso\" (Helppi, operador, data) e clique em Registrar. Pra presença sem uso de Helppi, use a seção \"Marcar presença\" logo abaixo." },
+        { id: "frame-presenca", icon: "🕐", nome: "Presença", tipo: "iframe",
+          url: "https://digital-kpis.github.io/controle-presenca/",
+          desc: "Controle de frequência dos colaboradores: presença, falta, folga, banco de horas e horário de almoço.",
+          atualizar: "Clique na célula do colaborador no dia desejado e escolha o status (presente, falta, folga etc.)." },
+        { id: "frame-dashboard", icon: "📊", nome: "Dashboard (Vendas)", tipo: "iframe",
+          url: "https://digital-kpis.github.io/Vendas/",
+          desc: "Relatório de vendas diário/mensal/anual, com metas e comparação entre períodos.",
+          atualizar: "Digite os valores direto nas células da planilha — salva sozinho e sincroniza entre dispositivos." },
+        { id: "frame-assai", icon: "📈", nome: "Portal Assaí", tipo: "iframe",
+          url: "https://digital-kpis.github.io/portal-assai/",
+          desc: "Dashboard de produtividade e cancelamentos da loja.",
+          atualizar: "Use os botões de upload no topo (ex: \"Produção (PRODU)\", \"Ruptura (RUPTURA)\") pra carregar as planilhas .xlsx correspondentes." },
+        { id: "frame-escala", icon: "📅", nome: "Escala", tipo: "iframe",
+          url: "https://digital-kpis.github.io/escala-digital/",
+          desc: "Escala de trabalho 6x1 dos colaboradores, cadastro de colaborador e controle de férias.",
+          atualizar: "Faça login, depois use \"+ Novo colaborador\" pra cadastrar alguém ou \"+ Férias\" no colaborador pra marcar o período." },
+        { id: "frame-pedidos", icon: "📦", nome: "Pedidos", tipo: "iframe",
+          url: "https://digital-kpis.github.io/controle-pedidos/",
+          desc: "Registro da quantidade de pedidos por turno (manhã/tarde/noite), dia a dia.",
+          atualizar: "Escolha a data, preencha a quantidade de cada turno e clique em Salvar." },
+        { id: "frame-nsu", icon: "🏍️", nome: "NSu", tipo: "iframe",
+          url: "https://digital-kpis.github.io/painel-nsu/",
+          desc: "Dashboard de liberação de motorista (NSu), com indicadores, gráficos e detalhamento por pedido.",
+          atualizar: "Clique em \"⬆ Atualizar dados (.xlsx)\" e carregue a planilha do dia. Pra recomeçar do zero, use \"Excluir todos os dados\"." },
+        { id: "panel-helppiloja", icon: "🛒", nome: "Helppi Loja", tipo: "firebase",
+          desc: "Controle diário de pedidos de Helppi da loja: orçadas, canceladas e quantidade por horário.",
+          atualizar: "Escolha o dia e preencha os números direto nos campos — salva sozinho." },
+        { id: "panel-checklist", icon: "✅", nome: "Checklist", tipo: "firebase",
+          desc: "Checklist de abertura e fechamento de loja, por dia.",
+          atualizar: "Marque os itens conforme forem feitos. Dá pra adicionar itens novos com \"+ Adicionar item\"." },
+        { id: "panel-ocorrencias", icon: "⚠️", nome: "Ocorrências", tipo: "firebase",
+          desc: "Registro de ruptura, avaria ou produto vencido, por dia.",
+          atualizar: "Preencha produto, motivo e quantidade no formulário e clique em Registrar." },
+        { id: "panel-sla", icon: "📊", nome: "Indicadores", tipo: "firebase",
+          desc: "Histórico de indicadores por loja (cancelamento, SLA, ruptura etc.), com média mensal e comparativo entre lojas.",
+          atualizar: "Carregue o arquivo .html de indicadores (pode ser vários de uma vez, um por dia) e salve no histórico." },
+        { id: "panel-avaliacao", icon: "🌟", nome: "Avaliação", tipo: "firebase",
+          desc: "Anotações de desempenho (positivas/negativas) por colaborador.",
+          atualizar: "Escolha o colaborador, escreva a anotação e clique em Registrar." },
+        { id: "panel-ferias", icon: "🏖️", nome: "Férias", tipo: "firebase",
+          desc: "Consulta de quem está de férias, quem entra em breve e quem folga hoje.",
+          atualizar: "Essa aba é só consulta — pra marcar férias de alguém, use a aba Escala." },
+        { id: "panel-relatorio", icon: "📄", nome: "Relatório", tipo: "firebase",
+          desc: "Gera relatório semanal de uma loja a partir do histórico de Indicadores, pronto pra imprimir ou copiar.",
+          atualizar: "Escolha a loja e a semana e clique em Gerar relatório. Depende de já ter indicadores carregados na aba Indicadores." },
+        { id: "panel-comparativo", icon: "⚖️", nome: "Comparativo", tipo: "firebase",
+          desc: "Compara os indicadores de 2 ou mais lojas lado a lado, com ranking.",
+          atualizar: "Adicione as lojas que quer comparar e escolha a data — também depende dos dados carregados em Indicadores." },
+        { id: "panel-monitor", icon: "🖥️", nome: "Monitor", tipo: "firebase",
+          desc: "Acompanhamento da operação ao longo do dia (cancelamento, SLA, entregas), com histórico por dia.",
+          atualizar: "Carregue um print do painel de operação (ele tenta ler os números sozinho) ou preencha manual, e clique em Adicionar." }
+      ];
+
+      function renderAjudaGrid() {
+        const grid = document.getElementById("aj-status-grid");
+        grid.innerHTML = AJUDA_TABS.map(t => `
+          <div class="aj-status-card">
+            <div class="aj-status-icon">${t.icon}</div>
+            <div class="aj-status-nome">${t.nome}</div>
+            <div class="aj-status-dot checando" id="aj-status-${t.id}">🟡 Verificando…</div>
+          </div>`).join("");
+      }
+
+      function renderAjudaGuia() {
+        const list = document.getElementById("aj-guide-list");
+        list.innerHTML = AJUDA_TABS.map(t => `
+          <div class="aj-guide-card">
+            <div class="aj-guide-title">${t.icon} ${t.nome}</div>
+            <div class="aj-guide-desc">${t.desc}</div>
+            <div class="aj-guide-update"><b>Como atualizar:</b> ${t.atualizar}</div>
+          </div>`).join("");
+      }
+
+      async function verificarStatusUm(tab) {
+        const el = document.getElementById("aj-status-" + tab.id);
+        if (!el) return;
+        el.textContent = "🟡 Verificando…";
+        el.className = "aj-status-dot checando";
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 6000);
+          await fetch(tab.url, { mode: "no-cors", cache: "no-store", signal: controller.signal });
+          clearTimeout(timeoutId);
+          el.textContent = "🟢 Online";
+          el.className = "aj-status-dot online";
+        } catch (e) {
+          el.textContent = "🔴 Sem resposta";
+          el.className = "aj-status-dot offline";
+        }
+      }
+
+      function aplicarStatusFirebase(conectado) {
+        AJUDA_TABS.filter(t => t.tipo === "firebase").forEach(tab => {
+          const el = document.getElementById("aj-status-" + tab.id);
+          if (!el) return;
+          el.textContent = conectado ? "🟢 Online" : "🔴 Sem conexão";
+          el.className = "aj-status-dot " + (conectado ? "online" : "offline");
+        });
+      }
+
+      window.verificarStatusTudo = async function () {
+        document.getElementById("aj-status-resumo").textContent = "Verificando…";
+        const iframeTabs = AJUDA_TABS.filter(t => t.tipo === "iframe");
+        const [, fbSnap] = await Promise.all([
+          Promise.all(iframeTabs.map(verificarStatusUm)),
+          db.ref(".info/connected").once("value")
+        ]);
+        aplicarStatusFirebase(!!fbSnap.val());
+        document.getElementById("aj-status-resumo").textContent =
+          "Última verificação: " + new Date().toLocaleTimeString("pt-BR");
+      };
+
+      // Mantém o status dos painéis nativos (Firebase) sempre atualizado,
+      // reaproveitando a mesma conexão já usada no resto do PAINEL.
+      db.ref(".info/connected").on("value", snap => {
+        aplicarStatusFirebase(!!snap.val());
+      });
+
+      renderAjudaGrid();
+      renderAjudaGuia();
     })();
 
 
